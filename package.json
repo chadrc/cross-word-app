@@ -1,0 +1,13 @@
+{
+  "name": "cross-word-app",
+  "version": "1.0.0",
+  "description": "Simple cross word app.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "hhvm -m server -p 3000",
+    "setup": "hhvm composer.phar install"
+  },
+  "author": "",
+  "license": "MIT"
+}
