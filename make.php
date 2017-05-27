@@ -1,5 +1,9 @@
 <?hh
 require_once("vendor/facebook/xhp-lib/init.php");
+require_once("requests.php");
+
+$words = postString("words");
+$hints = postString("hints");
 
 echo (
 <html>
@@ -7,7 +11,7 @@ echo (
   <title>Cross Word App</title>
 </head>
 <body>
-  <h1>Cross Word App</h1>
-  <a href="create.php">Create</a>
+  <p>Words: {$words}</p>
+  <p>Hints: {$hints}</p>
 </body>
 </html>);
