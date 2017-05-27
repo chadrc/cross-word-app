@@ -1,6 +1,6 @@
 <?hh
 require_once("vendor/facebook/xhp-lib/init.php");
-require_once("requests.php");
+require_once("shared/requests.php");
 
 $words = postString("words");
 $hints = postString("hints");
