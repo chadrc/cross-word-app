@@ -1,12 +1,8 @@
 <?hh
-require_once("vendor/facebook/xhp-lib/init.php");
+require_once("shared/page.hh");
 
 echo (
-<html>
-<head>
-  <title>Cross Word App</title>
-</head>
-<body>
+<page>
   <h1>Create Cross Word</h1>
   <form action="make.php" method="post">
     <label for="words">Words (Comma separated)</label>
@@ -17,5 +13,5 @@ echo (
 
     <button type="submit">Make</button>
   </form>
-</body>
-</html>);
+</page>
+);

@@ -1,13 +1,9 @@
 <?hh
-require_once("vendor/facebook/xhp-lib/init.php");
+require_once("shared/page.hh");
 
 echo (
-<html>
-<head>
-  <title>Cross Word App</title>
-</head>
-<body>
+<page>
   <h1>Cross Word App</h1>
   <a href="create.php">Create</a>
-</body>
-</html>);
+</page>
+);
