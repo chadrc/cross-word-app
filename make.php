@@ -6,7 +6,7 @@ $words = postString("words");
 $hints = postString("hints");
 
 echo (
-<page>
+<page title="Cross Word Created">
   <p>Words: {$words}</p>
   <p>Hints: {$hints}</p>
 </page>
