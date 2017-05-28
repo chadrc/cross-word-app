@@ -89,6 +89,13 @@ function make_cross_word(Map<string, string> $wordHintMap): CrossWord {
             $existing->join($cell);
             $cell->join($existing);
           } else {
+            $neighbors = $grid->cell_neighbors($cell);
+            foreach ($neighbors as $neighbor) {
+              if ($neighbor->get_owner() !== $letter->get_owner()
+              && $neighbor->get_owner() !== $value) {
+                throw new CannotPlaceWord(Pair{$letter, $join_letter}, $value, $placed, $grid);
+              }
+            }
             $grid->set_cell($x, $start_y, $cell);
           }
           $start_y--;
@@ -105,6 +112,13 @@ function make_cross_word(Map<string, string> $wordHintMap): CrossWord {
             $existing->join($cell);
             $cell->join($existing);
           } else {
+            $neighbors = $grid->cell_neighbors($cell, false);
+            foreach ($neighbors as $neighbor) {
+              if ($neighbor->get_owner() !== $letter->get_owner()
+              && $neighbor->get_owner() !== $value) {
+                throw new CannotPlaceWord(Pair{$letter, $join_letter}, $value, $placed, $grid);
+              }
+            }
             $grid->set_cell($start_x, $y, $cell);
           }
           $start_x++;
@@ -131,6 +145,20 @@ function get_common_letters(Vector<CrossWordString> $placed, CrossWordString $pl
 class NoCommonLetters extends CrossWordGenerationException {}
 class AllCommonLettersOccluded extends CrossWordGenerationException {}
 
+class CannotPlaceWord extends CrossWordGenerationException {
+  public function __construct(
+    private Pair<CrossWordCell, CrossWordCell> $join_pair,
+    private CrossWordString $placing,
+    private Vector<CrossWordString> $placed,
+    private CrossWordGrid $grid) {
+    parent::__construct($placing, $placed, $grid);
+  }
+
+  public function get_join_pair(): Pair<CrossWordCell, CrossWordCell> {
+    return $this->join_pair;
+  }
+}
+
 class CrossWordGenerationException extends Exception {
   public function __construct(
   private CrossWordString $placing,
@@ -138,10 +166,26 @@ class CrossWordGenerationException extends Exception {
   private CrossWordGrid $grid) {
     parent::__construct();
   }
+
+  public function get_placing(): CrossWordString {
+    return $this->placing;
+  }
+
+  public function get_placed(): Vector<CrossWordString> {
+    return $this->placed;
+  }
+
+  public function get_grid(): CrossWordGrid {
+    return $this->grid;
+  }
 }
 
 class CrossWordCreationFailed extends Exception {
   public function __construct(private Vector<CrossWordGenerationException> $attempts) {
     parent::__construct();
+  }
+
+  public function get_attempts(): Vector<CrossWordGenerationException> {
+    return $this->attempts;
   }
 }

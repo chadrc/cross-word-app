@@ -3,9 +3,7 @@ require_once("shared/CrossWordCell.hh");
 require_once("shared/utils.hh");
 
 class Coordinate {
-  public function __construct(private int $x, private int $y) {
-
-  }
+  public function __construct(private int $x, private int $y) {}
 
   public function get_x(): int {
     return $this->x;
@@ -33,36 +31,41 @@ class CrossWordGrid implements Printable {
     return null;
   }
 
-  public function cell_neighbor_count(CrossWordCell $cell): int {
+  private function cell_neighbor_positions(CrossWordCell $cell, bool $include_ordinal): Vector<Coordinate> {
     $cx = $cell->get_x();
     $cy = $cell->get_y();
-    $existing = $this->get_cell($cx, $cy);
-    if ($existing === null) {
-      return -1;
-    }
 
-    $neighbor_coordinates = Vector {
-      new Coordinate($cx - 1, $cy + 1),
+    $positions = Vector {
       new Coordinate($cx, $cy + 1),
-      new Coordinate($cx + 1, $cy + 1),
-
       new Coordinate($cx - 1, $cy),
       new Coordinate($cx + 1, $cy),
-
-      new Coordinate($cx - 1, $cy - 1),
       new Coordinate($cx, $cy - 1),
-      new Coordinate($cx + 1, $cy - 1)
     };
 
-    $count = 0;
-    foreach ($neighbor_coordinates as $coord) {
-      $neighbor = $this->get_cell($coord->get_x(), $coord->get_y());
-      if ($neighbor !== null) {
-        $count++;
-      }
+    if ($include_ordinal) {
+      $positions[] = new Coordinate($cx - 1, $cy + 1);
+      $positions[] = new Coordinate($cx + 1, $cy + 1);
+      $positions[] = new Coordinate($cx - 1, $cy - 1);
+      $positions[] = new Coordinate($cx + 1, $cy - 1);
     }
 
-    return $count;
+    return $positions;
+  }
+
+  public function cell_neighbors(CrossWordCell $cell, bool $include_ordinal = true): Vector<CrossWordCell> {
+    $neighbors = Vector {};
+    $neighbors_coordinates = $this->cell_neighbor_positions($cell, $include_ordinal);
+    foreach ($neighbors_coordinates as $coord) {
+      $neighbor = $this->get_cell($coord->get_x(), $coord->get_y());
+      if ($neighbor !== null) {
+        $neighbors[] = $neighbor;
+      }
+    }
+    return $neighbors;
+  }
+
+  public function cell_neighbor_count(CrossWordCell $cell, bool $include_ordinal = true): int {
+    return $this->cell_neighbors($cell, $include_ordinal)->count();
   }
 
   public function __toString(): string {
