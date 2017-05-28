@@ -175,7 +175,7 @@ function create_cross_word(Map<string, string> $wordHintMap): CrossWord {
           }
         } else {
           echo "vertical\n";
-          $start_x = $letter->get_x() - ($pos_dif + 1);
+          $start_x = $letter->get_x() - $pos_dif;
           $y = $letter->get_y();
 
           foreach($value->get_cells() as $cell) {
