@@ -159,9 +159,6 @@ function create_cross_word(Map<string, string> $wordHintMap): CrossWord {
           echo "horizontal\n";
           $start_y = $letter->get_y() + $pos_dif;
           $x = $letter->get_x();
-          // if (!$grid->containsKey($letter->get_y())) {
-          //   $grid[$x] = Map {};
-          // }
 
           foreach ($value->get_cells() as $cell) {
             if (!$grid->containsKey($start_y)) {
