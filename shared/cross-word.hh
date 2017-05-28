@@ -180,7 +180,7 @@ function create_cross_word(Map<string, string> $wordHintMap): CrossWord {
           $row = $grid[$y];
 
           foreach($value->get_cells() as $cell) {
-            if ($row.containsKey($y)) {
+            if ($row->containsKey($y)) {
               $row[$start_x]->join($cell);
             } else {
               $row[$start_x] = $cell;

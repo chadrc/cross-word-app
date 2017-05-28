@@ -3,7 +3,8 @@ require_once("shared/cross-word.hh");
 
 $word_hint_map = Map {
   "myWord" => "First Word",
-  "myOtherWord" => "Another Word"
+  "myOtherWord" => "Another Word",
+  "dogs" => "Furry animal."
 };
 
 $cross_word = create_cross_word($word_hint_map);
