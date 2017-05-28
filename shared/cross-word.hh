@@ -157,7 +157,7 @@ function create_cross_word(Map<string, string> $wordHintMap): CrossWord {
         $pos_dif = $join_letter->get_position();
         if ($letter->get_owner()->is_horizontal()) {
           echo "horizontal\n";
-          $start_y = $letter->get_y() + ($pos_dif + 1);
+          $start_y = $letter->get_y() + $pos_dif;
           $x = $letter->get_x();
           if (!$grid->containsKey($letter->get_x())) {
             $grid[$x] = Map {};
@@ -268,7 +268,7 @@ function print_grid(Map<int, Map<int, CrossWordCell>> $grid) {
         continue;
       }
       echo "| ";
-      for ($row=$upper_y; $row>=$lower_y; $row--) {
+      for ($row=$upper_y; $row>$lower_y; $row--) {
         $row_cell = null;
         try {
           $row_cell = $col_cells[$row];
