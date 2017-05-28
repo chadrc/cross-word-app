@@ -58,7 +58,7 @@ function make_cross_word(Map<string, string> $wordHintMap): CrossWord {
       $letter = null; // Letter already in grid to be overlapped with
       foreach ($common as $c) {
         $neighbor_count = $grid->cell_neighbor_count($c);
-        if ($c->get_join() !== null || $neighbor_count <= 2) {
+        if ($c->get_join() === null && $neighbor_count <= 2) {
           $letter = $c;
           break;
         }
@@ -85,6 +85,7 @@ function make_cross_word(Map<string, string> $wordHintMap): CrossWord {
           $existing = $grid->get_cell($x, $start_y);
           if ($existing !== null) {
             $existing->join($cell);
+            $cell->join($existing);
           } else {
             $grid->set_cell($x, $start_y, $cell);
           }
@@ -100,6 +101,7 @@ function make_cross_word(Map<string, string> $wordHintMap): CrossWord {
           $existing = $grid->get_cell($start_x, $y);
           if ($existing !== null) {
             $existing->join($cell);
+            $cell->join($existing);
           } else {
             $grid->set_cell($start_x, $y, $cell);
           }
