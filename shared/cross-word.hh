@@ -33,7 +33,7 @@ function create_cross_word(Map<string, string> $wordHintMap): CrossWord {
       $common = get_common_letters($placed, $value);
       // print_vector($common);
       if ($common->count() > 0) {
-        shuffle_letters($common);
+        shuffle_vec($common);
         $letter = $common[0]; // Letter already in grid to be overlapped with
         // echo "chosen placed letter " . $letter . "\n";
         $options = $value->get_cells_with_letter($letter->get_letter());
@@ -90,13 +90,4 @@ function get_common_letters(Vector<CrossWordString> $placed, CrossWordString $pl
     }
   }
   return $common;
-}
-
-function shuffle_letters(Vector<CrossWordCell> $letters) {
-  for ($i=0; $i<$letters->count(); $i++) {
-    $roll = rand($i, $letters->count()-1);
-    $temp = $letters[$i];
-    $letters[$i] = $letters[$roll];
-    $letters[$roll] = $temp;
-  }
 }
