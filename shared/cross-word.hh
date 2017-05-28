@@ -76,51 +76,40 @@ function make_cross_word(Map<string, string> $wordHintMap): CrossWord {
       $join_letter = $options[$roll]; // Letter in placing word that will overlap $letter
       // echo "chosen join letter " . $join_letter . "\n";
 
+      // Lambda to capture local state instead of passing it through to another function
+      $join_func = ($x, $y, $cell) ==> {
+        $cell->set_position($x, $y);
+        $existing = $grid->get_cell($x, $y);
+        if ($existing !== null) {
+          $existing->join($cell);
+          $cell->join($existing);
+        } else {
+          $neighbors = $grid->cell_neighbors($cell);
+          foreach ($neighbors as $neighbor) {
+            if ($neighbor->get_owner() !== $letter->get_owner()
+            && $neighbor->get_owner() !== $value) {
+              throw new CannotPlaceWord(Pair{$letter, $join_letter}, $value, $placed, $grid);
+            }
+          }
+          $grid->set_cell($x, $y, $cell);
+        }
+      };
+
       $pos_dif = $join_letter->get_position();
       if ($letter->get_owner()->is_horizontal()) {
         // echo "horizontal\n";
         $start_y = $letter->get_y() + $pos_dif;
         $x = $letter->get_x();
-
         foreach ($value->get_cells() as $cell) {
-          $cell->set_position($x, $start_y);
-          $existing = $grid->get_cell($x, $start_y);
-          if ($existing !== null) {
-            $existing->join($cell);
-            $cell->join($existing);
-          } else {
-            $neighbors = $grid->cell_neighbors($cell);
-            foreach ($neighbors as $neighbor) {
-              if ($neighbor->get_owner() !== $letter->get_owner()
-              && $neighbor->get_owner() !== $value) {
-                throw new CannotPlaceWord(Pair{$letter, $join_letter}, $value, $placed, $grid);
-              }
-            }
-            $grid->set_cell($x, $start_y, $cell);
-          }
+          $join_func($x, $start_y, $cell);
           $start_y--;
         }
       } else {
         // echo "vertical\n";
         $start_x = $letter->get_x() - $pos_dif;
         $y = $letter->get_y();
-
         foreach($value->get_cells() as $cell) {
-          $cell->set_position($start_x, $y);
-          $existing = $grid->get_cell($start_x, $y);
-          if ($existing !== null) {
-            $existing->join($cell);
-            $cell->join($existing);
-          } else {
-            $neighbors = $grid->cell_neighbors($cell, false);
-            foreach ($neighbors as $neighbor) {
-              if ($neighbor->get_owner() !== $letter->get_owner()
-              && $neighbor->get_owner() !== $value) {
-                throw new CannotPlaceWord(Pair{$letter, $join_letter}, $value, $placed, $grid);
-              }
-            }
-            $grid->set_cell($start_x, $y, $cell);
-          }
+          $join_func($start_x, $y, $cell);
           $start_x++;
         }
       }
