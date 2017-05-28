@@ -180,17 +180,13 @@ function create_cross_word(Map<string, string> $wordHintMap): CrossWord {
           echo "vertical\n";
           $start_x = $letter->get_x() - $pos_dif;
           $y = $letter->get_y();
+          $row = $grid[$y];
 
           foreach($value->get_cells() as $cell) {
-            if (!$grid.containsKey($start_x)) {
-              $grid[$start_x] = Map {};
-            }
-
-            $col = $grid[$start_x];
-            if ($col.containsKey($y)) {
-              $col[$y]->join($cell);
+            if ($row.containsKey($y)) {
+              $row[$start_x]->join($cell);
             } else {
-              $col[$y] = $cell;
+              $row[$start_x] = $cell;
             }
             $cell->set_position($start_x, $y);
             $start_x++;
