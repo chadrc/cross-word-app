@@ -30,9 +30,9 @@ function make_cross_word(Map<string, string> $wordHintMap): CrossWord {
   $placed = Vector {};
   $grid = new CrossWordGrid();
 
-  shuffle_vec($words);
-
   if ($words->count() > 0) {
+    shuffle_vec($words);
+
     $first = $words[0];
     $index = 0;
     foreach ($first->get_cells() as $value) {
