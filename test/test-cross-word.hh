@@ -8,6 +8,7 @@ $word_hint_map = Map {
 
 $cross_word = create_cross_word($word_hint_map);
 
+print_grid($cross_word->get_grid());
 foreach ($cross_word->get_grid() as $index => $col) {
   foreach ($col as $index => $cell) {
     $x = $cell->get_x();
