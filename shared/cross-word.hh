@@ -1,12 +1,80 @@
 <?hh
 
 class CrossWord {
-  public function __construct(private Vector<CrossWordString> $strings, private Map<int, Map<int, CrossWordCell>> $grid) {
+  public function __construct(private Vector<CrossWordString> $strings, private CrossWordGrid $grid) {
 
   }
 
-  public function get_grid(): Map<int, Map<int, CrossWordCell>> {
+  public function get_grid(): CrossWordGrid {
     return $this->grid;
+  }
+}
+
+class CrossWordGrid {
+  private Map<int, Map<int, CrossWordCell>> $grid = Map {};
+
+  public function set_cell(int $x, int $y, CrossWordCell $cell) {
+    if (!$this->grid->containsKey($y)) {
+      $this->grid[$y] = Map {};
+    }
+    $this->grid[$y][$x] = $cell;
+  }
+
+  public function get_cell(int $x, int $y): ?CrossWordCell {
+    if ($this->grid->containsKey($y) && $this->grid[$y]->containsKey($x)) {
+      return $this->grid[$y][$x];
+    }
+    return null;
+  }
+
+  public function __toString(): string {
+    $str = "";
+    $lower_x = PHP_INT_MAX;
+    $upper_x = PHP_INT_MIN;
+    $lower_y = PHP_INT_MAX;
+    $upper_y = PHP_INT_MIN;
+
+    foreach ($this->grid as $key => $string) {
+      foreach ($string as $key => $letter) {
+        if ($letter->get_x() > $upper_x) {
+          $upper_x = $letter->get_x();
+        }
+
+        if ($letter->get_x() < $lower_x) {
+          $lower_x = $letter->get_x();
+        }
+
+        if ($letter->get_y() > $upper_y) {
+          $upper_y = $letter->get_y();
+        }
+
+        if ($letter->get_y() < $lower_y) {
+          $lower_y = $letter->get_y();
+        }
+      }
+    }
+
+    for ($row=$upper_y; $row>=$lower_y; $row--) {
+      $row_cells = null;
+      try {
+        $row_cells = $this->grid[$row];
+      } catch (Exception $e) {
+        continue;
+      }
+      $str = $str . "| ";
+      for ($col=$lower_x; $col<=$upper_x; $col++) {
+        $col_cell = null;
+        try {
+          $col_cell = $row_cells[$col];
+        } catch (Exception $e) {
+          $str = $str . "  | ";
+          continue;
+        }
+        $str = $str . $col_cell->get_letter() . " | ";
+      }
+      $str = $str . "\n";
+    }
+    return $str;
   }
 }
 
@@ -120,81 +188,75 @@ function create_cross_word(Map<string, string> $wordHintMap): CrossWord {
     $words[] = new CrossWordString(strtolower($key), $value);
   }
 
-  print_words($words);
+  // print_words($words);
 
   $placed = Vector {};
-  $grid = Map {};
+  $grid = new CrossWordGrid();
 
   if ($words->count() > 0) {
     $first = $words[0];
     $index = 0;
-    $grid[0] = Map {};
     foreach ($first->get_cells() as $value) {
       $value->set_position($index, 0);
-      $grid[0][$index] = $value;
+      $grid->set_cell($index, 0, $value);
       $index++;
     }
     $placed[] = $first;
     $words->removeKey(0);
 
-    echo "After removal\n";
-    print_words($words);
+    // echo "After removal\n";
+    // print_words($words);
 
     foreach ($words as $value) {
-      echo "Checking " . $value->get_word() . " against\n";
-      print_words($placed);
+      // echo "Checking " . $value->get_word() . " against\n";
+      // print_words($placed);
       $common = get_common_letters($placed, $value);
-      print_letters($common);
+      // print_letters($common);
       if ($common->count() > 0) {
         shuffle_letters($common);
         $letter = $common[0]; // Letter already in grid to be overlapped with
-        echo "chosen placed letter " . $letter . "\n";
+        // echo "chosen placed letter " . $letter . "\n";
         $options = $value->get_cells_with_letter($letter->get_letter());
         $roll = rand(0, $options->count()-1);
         $join_letter = $options[$roll]; // Letter in placing word that will overlap $letter
-        echo "chosen join letter " . $join_letter . "\n";
+        // echo "chosen join letter " . $join_letter . "\n";
 
         $pos_dif = $join_letter->get_position();
         if ($letter->get_owner()->is_horizontal()) {
-          echo "horizontal\n";
+          // echo "horizontal\n";
           $start_y = $letter->get_y() + $pos_dif;
           $x = $letter->get_x();
 
           foreach ($value->get_cells() as $cell) {
-            if (!$grid->containsKey($start_y)) {
-              $grid[$start_y] = Map {};
-            }
-            $row = $grid[$start_y];
-            if ($row->containsKey($x)) {
-              $row[$x]->join($cell);
-            } else {
-              $row[$x] = $cell;
-            }
             $cell->set_position($x, $start_y);
+            $existing = $grid->get_cell($x, $start_y);
+            if ($existing !== null) {
+              $existing->join($cell);
+            } else {
+              $grid->set_cell($x, $start_y, $cell);
+            }
             $start_y--;
           }
         } else {
-          echo "vertical\n";
+          // echo "vertical\n";
           $start_x = $letter->get_x() - $pos_dif;
           $y = $letter->get_y();
-          $row = $grid[$y];
 
           foreach($value->get_cells() as $cell) {
-            if ($row->containsKey($y)) {
-              $row[$start_x]->join($cell);
-            } else {
-              $row[$start_x] = $cell;
-            }
             $cell->set_position($start_x, $y);
+            $existing = $grid->get_cell($start_x, $y);
+            if ($existing !== null) {
+              $existing->join($cell);
+            } else {
+              $grid->set_cell($start_x, $y, $cell);
+            }
             $start_x++;
           }
         }
-
         $placed[] = $value;
       }
     }
   }
-
   return new CrossWord($words, $grid);
 }
 
@@ -228,53 +290,5 @@ function print_words(Vector<CrossWordString> $words) {
 function print_letters(Vector<CrossWordCell> $letters) {
   foreach ($letters as $value) {
     echo $value . "\n";
-  }
-}
-
-function print_grid(Map<int, Map<int, CrossWordCell>> $grid) {
-  $lower_x = PHP_INT_MAX;
-  $upper_x = PHP_INT_MIN;
-  $lower_y = PHP_INT_MAX;
-  $upper_y = PHP_INT_MIN;
-
-  foreach ($grid as $key => $string) {
-    foreach ($string as $key => $letter) {
-      if ($letter->get_x() > $upper_x) {
-        $upper_x = $letter->get_x();
-      }
-
-      if ($letter->get_x() < $lower_x) {
-        $lower_x = $letter->get_x();
-      }
-
-      if ($letter->get_y() > $upper_y) {
-        $upper_y = $letter->get_y();
-      }
-
-      if ($letter->get_y() < $lower_y) {
-        $lower_y = $letter->get_y();
-      }
-    }
-  }
-
-  for ($row=$upper_y; $row>=$lower_y; $row--) {
-    $row_cells = null;
-    try {
-      $row_cells = $grid[$row];
-    } catch (Exception $e) {
-      continue;
-    }
-    echo "| ";
-    for ($col=$lower_x; $col<=$upper_x; $col++) {
-      $col_cell = null;
-      try {
-        $col_cell = $row_cells[$col];
-      } catch (Exception $e) {
-        echo "  | ";
-        continue;
-      }
-      echo $col_cell->get_letter() . " | ";
-    }
-    echo "\n";
   }
 }
