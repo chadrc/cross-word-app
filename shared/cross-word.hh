@@ -259,26 +259,26 @@ function print_grid(Map<int, Map<int, CrossWordCell>> $grid) {
         $lower_y = $letter->get_y();
       }
     }
+  }
 
-    for ($col=$lower_x; $col<$upper_x; $col++) {
-      $col_cells = null;
+  for ($col=$lower_x; $col<$upper_x; $col++) {
+    $col_cells = null;
+    try {
+      $col_cells = $grid[$col];
+    } catch (Exception $e) {
+      continue;
+    }
+    echo "| ";
+    for ($row=$upper_y; $row>=$lower_y; $row--) {
+      $row_cell = null;
       try {
-        $col_cells = $grid[$col];
+        $row_cell = $col_cells[$row];
       } catch (Exception $e) {
+        echo "  | ";
         continue;
       }
-      echo "| ";
-      for ($row=$upper_y; $row>$lower_y; $row--) {
-        $row_cell = null;
-        try {
-          $row_cell = $col_cells[$row];
-        } catch (Exception $e) {
-          echo "  | ";
-          continue;
-        }
-        echo $row_cell->get_letter() . " | ";
-      }
-      echo " |\n";
+      echo $row_cell->get_letter() . " | ";
     }
+    echo "\n";
   }
 }
