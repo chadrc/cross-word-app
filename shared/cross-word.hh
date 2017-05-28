@@ -128,10 +128,10 @@ function create_cross_word(Map<string, string> $wordHintMap): CrossWord {
   if ($words->count() > 0) {
     $first = $words[0];
     $index = 0;
+    $grid[0] = Map {};
     foreach ($first->get_cells() as $value) {
       $value->set_position($index, 0);
-      $grid[$index] = Map {};
-      $grid[$index][0] = $value;
+      $grid[0][$index] = $value;
       $index++;
     }
     $placed[] = $first;
@@ -159,16 +159,19 @@ function create_cross_word(Map<string, string> $wordHintMap): CrossWord {
           echo "horizontal\n";
           $start_y = $letter->get_y() + $pos_dif;
           $x = $letter->get_x();
-          if (!$grid->containsKey($letter->get_x())) {
-            $grid[$x] = Map {};
-          }
+          // if (!$grid->containsKey($letter->get_y())) {
+          //   $grid[$x] = Map {};
+          // }
 
-          $col = $grid[$x];
           foreach ($value->get_cells() as $cell) {
-            if ($col->containsKey($start_y)) {
-              $col[$start_y]->join($cell);
+            if (!$grid->containsKey($start_y)) {
+              $grid[$start_y] = Map {};
+            }
+            $row = $grid[$start_y];
+            if ($row->containsKey($x)) {
+              $row[$x]->join($cell);
             } else {
-              $col[$start_y] = $cell;
+              $row[$x] = $cell;
             }
             $cell->set_position($x, $start_y);
             $start_y--;
@@ -261,23 +264,23 @@ function print_grid(Map<int, Map<int, CrossWordCell>> $grid) {
     }
   }
 
-  for ($col=$lower_x; $col<$upper_x; $col++) {
-    $col_cells = null;
+  for ($row=$upper_y; $row>=$lower_y; $row--) {
+    $row_cells = null;
     try {
-      $col_cells = $grid[$col];
+      $row_cells = $grid[$row];
     } catch (Exception $e) {
       continue;
     }
     echo "| ";
-    for ($row=$upper_y; $row>=$lower_y; $row--) {
-      $row_cell = null;
+    for ($col=$lower_x; $col<=$upper_x; $col++) {
+      $col_cell = null;
       try {
-        $row_cell = $col_cells[$row];
+        $col_cell = $row_cells[$col];
       } catch (Exception $e) {
         echo "  | ";
         continue;
       }
-      echo $row_cell->get_letter() . " | ";
+      echo $col_cell->get_letter() . " | ";
     }
     echo "\n";
   }
