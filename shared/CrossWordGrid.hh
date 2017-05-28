@@ -2,6 +2,20 @@
 require_once("shared/CrossWordCell.hh");
 require_once("shared/utils.hh");
 
+class Coordinate {
+  public function __construct(private int $x, private int $y) {
+
+  }
+
+  public function get_x(): int {
+    return $this->x;
+  }
+
+  public function get_y(): int {
+    return $this->y;
+  }
+}
+
 class CrossWordGrid implements Printable {
   private Map<int, Map<int, CrossWordCell>> $grid = Map {};
 
@@ -17,6 +31,38 @@ class CrossWordGrid implements Printable {
       return $this->grid[$y][$x];
     }
     return null;
+  }
+
+  public function cell_neighbor_count(CrossWordCell $cell): int {
+    $cx = $cell->get_x();
+    $cy = $cell->get_y();
+    $existing = $this->get_cell($cx, $cy);
+    if ($existing === null) {
+      return -1;
+    }
+
+    $neighbor_coordinates = Vector {
+      new Coordinate($cx - 1, $cy + 1),
+      new Coordinate($cx, $cy + 1),
+      new Coordinate($cx + 1, $cy + 1),
+
+      new Coordinate($cx - 1, $cy),
+      new Coordinate($cx + 1, $cy),
+
+      new Coordinate($cx - 1, $cy - 1),
+      new Coordinate($cx, $cy - 1),
+      new Coordinate($cx + 1, $cy - 1)
+    };
+
+    $count = 0;
+    foreach ($neighbor_coordinates as $coord) {
+      $neighbor = $this->get_cell($coord->get_x(), $coord->get_y());
+      if ($neighbor !== null) {
+        $count++;
+      }
+    }
+
+    return $count;
   }
 
   public function __toString(): string {
