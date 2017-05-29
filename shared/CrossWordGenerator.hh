@@ -13,8 +13,8 @@ class CrossWordGenerator {
     $this->placed = Vector {};
     $this->words = Vector {};
 
-    foreach($word_hint_map as $key => $value) {
-      $this->words[] = new CrossWordString(strtolower($key), $value);
+    foreach($word_hint_map as $key => $word) {
+      $this->words[] = new CrossWordString(strtolower($key), $word);
     }
 
     if ($this->words->count() > 0) {
@@ -22,9 +22,9 @@ class CrossWordGenerator {
 
       $first = $this->words[0];
       $index = 0;
-      foreach ($first->get_cells() as $value) {
-        $value->set_position($index, 0);
-        $this->grid->set_cell($index, 0, $value);
+      foreach ($first->get_cells() as $word) {
+        $word->set_position($index, 0);
+        $this->grid->set_cell($index, 0, $word);
         $index++;
       }
       $this->placed[] = $first;
@@ -33,8 +33,9 @@ class CrossWordGenerator {
       // echo "After removal\n";
       // print_words($this->words);
 
-      foreach ($this->words as $value) {
-        $this->join_attempt($value);
+      echo "first: " . $first . "\n";
+      foreach ($this->words as $word) {
+        $this->join_attempt($word);
       }
     }
     $this->cross_word = new CrossWord($this->words, $this->grid);
@@ -44,32 +45,41 @@ class CrossWordGenerator {
     return $this->cross_word;
   }
 
-  private function join_attempt(CrossWordString $value) {
-    // echo "Checking " . $value->get_word() . " against\n";
-    // print_vector($this->placed);
-    $common = $this->get_common_letters($this->placed, $value);
+  private function join_attempt(CrossWordString $word) {
+    echo "Joining " . $word->get_word() . " against\n";
+    print_vector($this->placed);
+    $common = $this->get_common_letters($this->placed, $word);
     // print_vector($common);
 
     if ($common->count() === 0) {
-      throw new NoCommonLetters($value, $this->placed, $this->grid);
+      throw new NoCommonLetters($word, $this->placed, $this->grid);
     }
 
     shuffle_vec($common);
-    $letter = null; // Letter already in grid to be overlapped with
+    $word_placed = false;
     foreach ($common as $c) {
-      $neighbor_count = $this->grid->cell_neighbor_count($c);
-      if ($c->get_join() === null && $neighbor_count <= 2) {
-        $letter = $c;
+      $word_placed = $this->place_word_on_letter($c, $word);
+      if ($word_placed) {
+        echo "placed\n";
         break;
       }
     }
 
-    if ($letter === null) {
-      throw new AllCommonLettersOccluded($value, $this->placed, $this->grid);
+    if (!$word_placed) {
+      echo "not placed\n";
+      throw new AllCommonLettersOccluded($word, $this->placed, $this->grid);
+    }
+  }
+
+  private function place_word_on_letter(CrossWordCell $letter, CrossWordString $word): bool {
+    echo "placing '" . $word . "' on '" . $letter . "'\n";
+    $neighbor_count = $this->grid->cell_neighbor_count($letter);
+    if ($letter->get_join() !== null || $neighbor_count > 2) {
+      return false;
     }
 
-    // echo "chosen placed letter " . $letter . "\n";
-    $options = $value->get_cells_with_letter($letter->get_letter());
+    echo "chosen placed letter " . $letter . "\n";
+    $options = $word->get_cells_with_letter($letter->get_letter());
     $roll = rand(0, $options->count()-1);
     $join_letter = $options[$roll]; // Letter in placing word that will overlap $letter
     // echo "chosen join letter " . $join_letter . "\n";
@@ -77,14 +87,14 @@ class CrossWordGenerator {
     $align_vert = $letter->get_owner()->is_horizontal();
 
     $possible_multi = Vector {};
-    foreach ($this->placed as $word) {
+    foreach ($this->placed as $placed_word) {
       // Ignore words that are oriented same as new placed word will be
-      if ($align_vert && $word->is_verticle()
-      || !$align_vert && $word->is_horizontal()) {
+      if ($align_vert && $placed_word->is_verticle()
+      || !$align_vert && $placed_word->is_horizontal()) {
         continue;
       }
 
-      foreach ($word->get_cells() as $cell) {
+      foreach ($placed_word->get_cells() as $cell) {
         if ($cell === $letter) {
           // Already joining on this letter
           continue;
@@ -99,7 +109,6 @@ class CrossWordGenerator {
             $possible_multi[] = $cell;
           }
         }
-
       }
     }
 
@@ -152,35 +161,42 @@ class CrossWordGenerator {
             }
           }
           if ($neighbor->get_owner() !== $letter->get_owner()
-          && $neighbor->get_owner() !== $value
+          && $neighbor->get_owner() !== $word
           && !$is_multi_join) {
             // echo "cannot place " . ($is_multi_join ? 'true' : 'false') . "\n";
-            throw new CannotPlaceWord(Pair{$letter, $join_letter}, $value, $this->placed, $this->grid);
+            throw new CannotPlaceWord(Pair{$letter, $join_letter}, $word, $this->placed, $this->grid);
           }
         }
         $this->grid->set_cell($x, $y, $cell);
       }
     };
 
-    $pos_dif = $join_letter->get_position();
-    if ($letter->get_owner()->is_horizontal()) {
-      // echo "horizontal\n";
-      $start_y = $letter->get_y() + $pos_dif;
-      $x = $letter->get_x();
-      foreach ($value->get_cells() as $cell) {
-        $join_func($x, $start_y, $cell);
-        $start_y--;
+    try {
+      $pos_dif = $join_letter->get_position();
+      if ($letter->get_owner()->is_horizontal()) {
+        // echo "horizontal\n";
+        $start_y = $letter->get_y() + $pos_dif;
+        $x = $letter->get_x();
+        foreach ($word->get_cells() as $cell) {
+          $join_func($x, $start_y, $cell);
+          $start_y--;
+        }
+      } else {
+        // echo "vertical\n";
+        $start_x = $letter->get_x() - $pos_dif;
+        $y = $letter->get_y();
+        foreach($word->get_cells() as $cell) {
+          $join_func($start_x, $y, $cell);
+          $start_x++;
+        }
       }
-    } else {
-      // echo "vertical\n";
-      $start_x = $letter->get_x() - $pos_dif;
-      $y = $letter->get_y();
-      foreach($value->get_cells() as $cell) {
-        $join_func($start_x, $y, $cell);
-        $start_x++;
-      }
+    } catch (CannotPlaceWord $e) {
+      return false;
     }
-    $this->placed[] = $value;
+
+    echo "placing: " . $word . "\n";
+    $this->placed[] = $word;
+    return true;
   }
 
   private function get_common_letters(Vector<CrossWordString> $placed, CrossWordString $placing): Vector<CrossWordCell> {
