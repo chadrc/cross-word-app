@@ -16,10 +16,10 @@ function test_multi_join() {
     "oxoooooo" => "Another Word",
     "ooxooooo" => "Furry animal.",
     "oooxoooo" => "Mythical creature.",
-    // "ooooxooo" => "Mythical creature.",
-    // "oooooxoo" => "Mythical creature.",
-    // "ooooooxo" => "Mythical creature.",
-    // "ooooooox" => "Mythical creature."
+    "ooooxooo" => "Mythical creature.",
+    "oooooxoo" => "Mythical creature.",
+    "ooooooxo" => "Mythical creature.",
+    "ooooooox" => "Mythical creature."
   });
 }
 

@@ -35,7 +35,7 @@ class CrossWordGenerator {
       // echo "After removal\n";
       // print_words($this->words);
 
-      echo "first: " . $first . "\n";
+      // echo "first: " . $first . "\n";
       foreach ($this->words as $word) {
         $this->join_attempt($word);
       }
@@ -48,8 +48,8 @@ class CrossWordGenerator {
   }
 
   private function join_attempt(CrossWordString $word) {
-    echo "Joining " . $word->get_word() . " against\n";
-    print_vector($this->placed);
+    // echo "Joining " . $word->get_word() . " against\n";
+    // print_vector($this->placed);
     $common = $this->get_common_letters($this->placed, $word);
     // print_vector($common);
 
@@ -62,25 +62,25 @@ class CrossWordGenerator {
     foreach ($common as $c) {
       $word_placed = $this->place_word_on_letter($c, $word);
       if ($word_placed) {
-        echo "placed\n";
+        // echo "placed\n";
         break;
       }
     }
 
     if (!$word_placed) {
-      echo "not placed\n";
+      // echo "not placed\n";
       throw new AllCommonLettersOccluded($word, $this->placed, $this->grid);
     }
   }
 
   private function place_word_on_letter(CrossWordCell $letter, CrossWordString $word): bool {
-    echo "placing '" . $word . "' on '" . $letter . "'\n";
+    // echo "placing '" . $word . "' on '" . $letter . "'\n";
     $neighbor_count = $this->grid->cell_neighbor_count($letter);
     if ($letter->get_join() !== null || $neighbor_count > 2) {
       return false;
     }
 
-    echo "chosen placed letter " . $letter . "\n";
+    // echo "chosen placed letter " . $letter . "\n";
     $join_data = new WordJoinData($letter, $word, $this->placed);
 
     $new_cells = Vector {};
@@ -120,7 +120,7 @@ class CrossWordGenerator {
       return false;
     }
 
-    echo "placing: " . $word . "\n";
+    // echo "placing: " . $word . "\n";
     $this->placed[] = $word;
     return true;
   }
