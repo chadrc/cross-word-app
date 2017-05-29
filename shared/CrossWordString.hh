@@ -28,6 +28,10 @@ class CrossWordString implements Printable {
     return $this->word;
   }
 
+  public function get_hint(): string {
+    return $this->hint;
+  }
+
   public function contains_letter(string $letter): bool {
     foreach ($this->cells as $cell) {
       if ($cell->get_letter() === $letter) {
