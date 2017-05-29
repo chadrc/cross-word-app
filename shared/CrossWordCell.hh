@@ -46,6 +46,10 @@ class CrossWordCell implements Printable {
     $this->join = $cell;
   }
 
+  public function clear_join() {
+    $this->join = null;
+  }
+
   public function get_join(): ?CrossWordCell {
     return $this->join;
   }

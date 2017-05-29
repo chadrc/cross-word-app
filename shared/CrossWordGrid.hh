@@ -31,6 +31,12 @@ class CrossWordGrid implements Printable {
     return null;
   }
 
+  public function clear_cell(int $x, int $y) {
+    if ($this->grid->containsKey($y) && $this->grid[$y]->containsKey($x)) {
+      $this->grid[$y]->removeKey($x);
+    }
+  }
+
   private function cell_neighbor_positions(CrossWordCell $cell, bool $include_ordinal): Vector<Coordinate> {
     $cx = $cell->get_x();
     $cy = $cell->get_y();

@@ -171,6 +171,7 @@ class CrossWordGenerator {
       }
     };
 
+    $new_cells = Vector {};
     try {
       $pos_dif = $join_letter->get_position();
       if ($letter->get_owner()->is_horizontal()) {
@@ -179,6 +180,7 @@ class CrossWordGenerator {
         $x = $letter->get_x();
         foreach ($word->get_cells() as $cell) {
           $join_func($x, $start_y, $cell);
+          $new_cells[] = $cell;
           $start_y--;
         }
       } else {
@@ -187,10 +189,22 @@ class CrossWordGenerator {
         $y = $letter->get_y();
         foreach($word->get_cells() as $cell) {
           $join_func($start_x, $y, $cell);
+          $new_cells[] = $cell;
           $start_x++;
         }
       }
     } catch (CannotPlaceWord $e) {
+      foreach ($new_cells as $new_cell) {
+        $join = $new_cell->get_join();
+        if ($join !== null) {
+          // Clear join
+          $join->clear_join();
+          $new_cell->clear_join();
+        } else {
+          // Clear grid cell
+          $this->grid->clear_cell($new_cell->get_x(), $new_cell->get_y());
+        }
+      }
       return false;
     }
 
