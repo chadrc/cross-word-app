@@ -74,8 +74,7 @@ class CrossWordGrid implements Printable {
     return $this->cell_neighbors($cell, $include_ordinal)->count();
   }
 
-  public function __toString(): string {
-    $str = "";
+  public function get_limits(): GridLimits {
     $lower_x = PHP_INT_MAX;
     $upper_x = PHP_INT_MIN;
     $lower_y = PHP_INT_MAX;
@@ -101,7 +100,14 @@ class CrossWordGrid implements Printable {
       }
     }
 
-    for ($row=$upper_y; $row>=$lower_y; $row--) {
+    return new GridLimits($lower_x, $upper_x, $lower_y, $upper_y);
+  }
+
+  public function __toString(): string {
+    $str = "";
+    $limits = $this->get_limits();
+
+    for ($row=$limits->max_y(); $row>=$limits->min_y(); $row--) {
       $row_cells = null;
       try {
         $row_cells = $this->grid[$row];
@@ -109,7 +115,7 @@ class CrossWordGrid implements Printable {
         continue;
       }
       $str = $str . "| ";
-      for ($col=$lower_x; $col<=$upper_x; $col++) {
+      for ($col=$limits->min_x(); $col<=$limits->max_x(); $col++) {
         $col_cell = null;
         try {
           $col_cell = $row_cells[$col];
@@ -122,5 +128,25 @@ class CrossWordGrid implements Printable {
       $str = $str . "\n";
     }
     return $str;
+  }
+}
+
+class GridLimits {
+  public function __construct(private int $min_x, private int $max_x, private int $min_y, private int $max_y) {}
+
+  public function min_x(): int {
+    return $this->min_x;
+  }
+
+  public function max_x(): int {
+    return $this->max_x;
+  }
+
+  public function min_y(): int {
+    return $this->min_y;
+  }
+
+  public function max_y(): int {
+    return $this->max_y;
   }
 }

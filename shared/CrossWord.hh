@@ -9,4 +9,8 @@ class CrossWord {
   public function get_grid(): CrossWordGrid {
     return $this->grid;
   }
+
+  public function get_words(): Vector<CrossWordString> {
+    return $this->strings;
+  }
 }

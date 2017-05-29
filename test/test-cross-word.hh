@@ -38,5 +38,5 @@ function get_cross_word(Map<string, string> $word_hint_map) {
   }
 }
 
-// test_basic();
-test_multi_join();
+test_basic();
+// test_multi_join();
