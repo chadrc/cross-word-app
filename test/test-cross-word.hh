@@ -12,10 +12,14 @@ function test_basic() {
 
 function test_multi_join() {
   get_cross_word(Map {
-    "oooowooo" => "First Word",
-    "ooooxooo" => "Another Word",
-    "oooohooo" => "Furry animal.",
-    "ooookooo" => "Mythical creature."
+    "xooooooo" => "First Word",
+    "oxoooooo" => "Another Word",
+    "ooxooooo" => "Furry animal.",
+    "oooxoooo" => "Mythical creature.",
+    // "ooooxooo" => "Mythical creature.",
+    // "oooooxoo" => "Mythical creature.",
+    // "ooooooxo" => "Mythical creature.",
+    // "ooooooox" => "Mythical creature."
   });
 }
 

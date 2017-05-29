@@ -76,6 +76,67 @@ function make_cross_word(Map<string, string> $wordHintMap): CrossWord {
       $join_letter = $options[$roll]; // Letter in placing word that will overlap $letter
       // echo "chosen join letter " . $join_letter . "\n";
 
+      $align_vert = $letter->get_owner()->is_horizontal();
+
+      $possible_multi = Vector {};
+      foreach ($placed as $word) {
+        // Ignore words that are oriented same as new placed word will be
+        if ($align_vert && $word->is_verticle()
+        || !$align_vert && $word->is_horizontal()) {
+          continue;
+        }
+
+        foreach ($word->get_cells() as $cell) {
+          if ($cell === $letter) {
+            // Already joining on this letter
+            continue;
+          }
+
+          if ($align_vert) {
+            if ($cell->get_x() === $letter->get_x()) {
+              $possible_multi[] = $cell;
+            }
+          } else {
+            if ($cell->get_y() === $letter->get_y()) {
+              $possible_multi[] = $cell;
+            }
+          }
+
+        }
+      }
+
+      $multi_joins = Vector {};
+      foreach ($possible_multi as $pm) {
+        // Check if the letters that would be overlapping are the same
+        // echo "checking multi " . $pm . "\n";
+        $dif = NAN;
+        if ($align_vert) {
+          $dif = $letter->get_y() - $pm->get_y();
+        } else {
+          $dif = $letter->get_x() - $pm->get_x();
+        }
+
+        // echo $dif . "\n";
+        $join_pos = $join_letter->get_position();
+        // echo $join_pos . "\n";
+        $join_index = NAN;
+        if ($align_vert) {
+          $join_index = $join_pos + $dif;
+        } else {
+          $join_index = $join_pos - $dif;
+        }
+        $multi_letter = $join_letter->get_owner()->get_cell($join_index);
+        if ($multi_letter === null) {
+          continue;
+        }
+        // echo $multi_letter . "\n";
+
+        if ($multi_letter->get_letter() === $pm->get_letter()) {
+          $multi_joins[] = $pm;
+          // echo "is multi join\n";
+        }
+      }
+
       // Lambda to capture local state instead of passing it through to another function
       $join_func = ($x, $y, $cell) ==> {
         $cell->set_position($x, $y);
@@ -86,8 +147,16 @@ function make_cross_word(Map<string, string> $wordHintMap): CrossWord {
         } else {
           $neighbors = $grid->cell_neighbors($cell);
           foreach ($neighbors as $neighbor) {
+            $is_multi_join = false;
+            foreach($multi_joins as $mj) {
+              if ($neighbor->get_owner() === $mj->get_owner()) {
+                $is_multi_join = true;
+              }
+            }
             if ($neighbor->get_owner() !== $letter->get_owner()
-            && $neighbor->get_owner() !== $value) {
+            && $neighbor->get_owner() !== $value
+            && !$is_multi_join) {
+              echo "cannot place " . ($is_multi_join ? 'true' : 'false') . "\n";
               throw new CannotPlaceWord(Pair{$letter, $join_letter}, $value, $placed, $grid);
             }
           }

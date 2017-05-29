@@ -17,6 +17,13 @@ class CrossWordString implements Printable {
     return $this->cells;
   }
 
+  public function get_cell(int $pos): ?CrossWordCell {
+    if ($this->cells->containsKey($pos)) {
+      return $this->cells[$pos];
+    }
+    return null;
+  }
+
   public function get_word(): string {
     return $this->word;
   }
