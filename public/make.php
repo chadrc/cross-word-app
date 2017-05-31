@@ -1,7 +1,7 @@
 <?hh
-require_once("shared/page.hh");
-require_once("shared/requests.php");
-require_once("shared/cross-word.hh");
+require_once("../shared/page.hh");
+require_once("../shared/requests.php");
+require_once("../shared/cross-word.hh");
 
 $words = postString("words");
 $hints = postString("hints");

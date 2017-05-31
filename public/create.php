@@ -1,5 +1,5 @@
 <?hh
-require_once("shared/page.hh");
+require_once("../shared/page.hh");
 
 echo (
 <page title="Create a Cross Word">
