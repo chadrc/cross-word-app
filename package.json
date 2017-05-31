@@ -4,10 +4,9 @@
   "description": "Simple cross word app.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "hhvm -m server -p 3000",
-    "setup": "hhvm composer.phar install",
-    "clear-store": "rm -rf store/*"
+    "start": "docker run -p 3000:80 cross-word-app:local",
+    "build": "docker build -t cross-word-app:local .",
+    "enter-build": "docker run --tty --interactive cross-word-app:local /bin/bash -l"
   },
   "author": "",
   "license": "MIT"
