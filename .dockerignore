@@ -5,7 +5,7 @@ Dockerfile
 package.json
 .gitignore
 .dockerignore
-cross-word-app.contianer.id
+cross-word-app.container.id
 
 # Node
 node_modules
