@@ -1,5 +1,6 @@
 {
   "require": {
-    "facebook/xhp-lib": "2.x"
+    "facebook/xhp-lib": "2.x",
+    "mongodb/mongodb": "1.x"
   }
 }
