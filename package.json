@@ -9,8 +9,10 @@
     "kill": "if [ -f cross-word-app.container.id ]; then echo 'Killing container...'; docker kill `cat cross-word-app.container.id`; echo 'Removing container id file.'; rm cross-word-app.container.id; else echo 'No container id file.'; fi",
     "build": "docker build -t cross-word-app:local .",
     "enter-build": "docker run --rm --tty --interactive cross-word-app:local /bin/bash -l",
-    "build-base": "cd base-docker-image && docker build -t base-cross-word-image:local .",
+    "build-base": "docker build -f Dockerfile.base -t base-cross-word-image:local .",
     "build-setup": "docker build -f Dockerfile.setup -t setup-cross-word-image:local .",
+    "build-from-setup": "npm run build-setup && npm run build",
+    "build-from-full": "npm run build-base && npm run build-from-setup",
     "sbs": "npm stop && npm run build && npm start",
     "kbs": "npm run kill && npm run build && npm start",
     "flog": "docker logs -f `cat cross-word-app.container.id`"
