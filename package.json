@@ -4,7 +4,7 @@
   "description": "Simple cross word app.",
   "main": "index.js",
   "scripts": {
-    "start": "docker run -d --rm -p 3000:80 cross-word-app:local",
+    "start": "docker run -d --cidfile='cross-word-app.container.id' --rm -p 3000:80 cross-word-app:local",
     "stop": "if [ -f cross-word-app.container.id ]; then echo 'Stopping container...'; docker stop `cat cross-word-app.container.id`; echo 'Removing container...'; docker rm `cat cross-word-app.container.id`; echo 'Removing container id file.'; rm cross-word-app.container.id; else echo 'No container id file.'; fi",
     "kill": "if [ -f cross-word-app.container.id ]; then echo 'Killing container...'; docker kill `cat cross-word-app.container.id`; echo 'Removing container id file.'; rm cross-word-app.container.id; else echo 'No container id file.'; fi",
     "build": "docker build -t cross-word-app:local .",
