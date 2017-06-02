@@ -15,7 +15,8 @@
     "build-from-full": "npm run build-base && npm run build-from-setup",
     "sbs": "npm stop && npm run build && npm start",
     "kbs": "npm run kill && npm run build && npm start",
-    "flog": "docker logs -f `cat cross-word-app.container.id`"
+    "flog": "docker logs -f `cat cross-word-app.container.id`",
+    "watch": "watchman-make -p '**/*.hh' '**/*.php' --make npm -t 'run kbs'"
   },
   "author": "",
   "license": "MIT"

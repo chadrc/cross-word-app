@@ -12,7 +12,11 @@ if (requestUri() === "/create") {
   echo (
   <page title="Cross Word App">
     <h1>Cross Word App</h1>
-    <a href="create">Create</a>
+    <nav>
+      <ul>
+        <li><a href="create">Create</a></li>
+      </ul>
+    </nav>
   </page>
   );
 }
