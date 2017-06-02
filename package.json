@@ -10,6 +10,7 @@
     "build": "docker build -t cross-word-app:local .",
     "enter-build": "docker run --rm --tty --interactive cross-word-app:local /bin/bash -l",
     "build-base": "cd base-docker-image && docker build -t base-cross-word-image:local .",
+    "build-setup": "docker build -f Dockerfile.setup -t setup-cross-word-image:local .",
     "sbs": "npm stop && npm run build && npm start",
     "kbs": "npm run kill && npm run build && npm start",
     "flog": "docker logs -f `cat cross-word-app.container.id`"

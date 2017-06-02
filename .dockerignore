@@ -2,6 +2,8 @@
 # App
 test
 Dockerfile
+Dockerfile.setup
+base-docker-image
 package.json
 .gitignore
 .dockerignore
