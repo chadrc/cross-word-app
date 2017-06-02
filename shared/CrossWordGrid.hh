@@ -1,6 +1,6 @@
 <?hh
-require_once("shared/CrossWordCell.hh");
-require_once("shared/utils.hh");
+require_once("../shared/CrossWordCell.hh");
+require_once("../shared/utils.hh");
 
 class Coordinate {
   public function __construct(private int $x, private int $y) {}

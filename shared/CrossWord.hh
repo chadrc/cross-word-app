@@ -1,5 +1,5 @@
 <?hh
-require_once("shared/CrossWordGrid.hh");
+require_once("../shared/CrossWordGrid.hh");
 
 class CrossWord {
   public function __construct(private Vector<CrossWordString> $strings, private CrossWordGrid $grid) {

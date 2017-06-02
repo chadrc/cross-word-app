@@ -1,6 +1,6 @@
 <?hh
-require_once("shared/CrossWordString.hh");
-require_once("shared/utils.hh");
+require_once("../shared/CrossWordString.hh");
+require_once("../shared/utils.hh");
 
 class CrossWordCell implements Printable {
   private ?CrossWordCell $join = null;

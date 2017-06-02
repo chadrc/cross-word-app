@@ -33,3 +33,7 @@ function postType(): string {
       return "POST";
    }
 }
+
+function requestUri(): string {
+  return $_SERVER['REQUEST_URI'];
+}

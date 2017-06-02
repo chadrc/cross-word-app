@@ -1,7 +1,7 @@
 <?hh
-require_once("shared/CrossWord.hh");
-require_once("shared/WordJoinData.hh");
-require_once("shared/CrossWordGenerationExceptions.hh");
+require_once("../shared/CrossWord.hh");
+require_once("../shared/WordJoinData.hh");
+require_once("../shared/CrossWordGenerationExceptions.hh");
 
 class CrossWordGenerator {
   private CrossWordGrid $grid;
