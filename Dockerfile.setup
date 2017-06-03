@@ -2,6 +2,7 @@ FROM base-cross-word-image:local
 
 RUN mkdir /var/www
 ADD composer.json /var/www
-ADD site.ini /etc/hhvm/site.ini
-RUN cd /var/www && \
+ADD site.ini /site.ini
+RUN cat site.ini >> /etc/hhvm/site.ini && \
+    cd /var/www && \
     hhvm /opt/composer/composer.phar install
