@@ -12,7 +12,7 @@
     "build-base": "docker build -f Dockerfile.base -t base-cross-word-image:local .",
     "build-setup": "docker build -f Dockerfile.setup -t setup-cross-word-image:local .",
     "build-from-setup": "npm run build-setup && npm run build",
-    "build-from-full": "npm run build-base && npm run build-from-setup",
+    "build-from-base": "npm run build-base && npm run build-from-setup",
     "sbs": "npm stop && npm run build && npm start",
     "kbs": "npm run kill && npm run build && npm start",
     "flog": "docker logs -f `cat cross-word-app.container.id`",

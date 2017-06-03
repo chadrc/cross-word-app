@@ -1,5 +1,5 @@
 <?hh
-require_once("../vendor/facebook/xhp-lib/init.php");
+require_once("../vendor/autoload.php");
 
 class :page extends :x:element {
   attribute string title;
