@@ -4,15 +4,15 @@ require_once("../shared/requests.php");
 require_once("../shared/create.hh");
 require_once("../shared/make.hh");
 
-$client = new MongoDB\Client("mongodb://localhost:27017");
+recordRequest(fetchPOST(), fetchGET(), requestUri());
 
-if (requestUri() === "/info") {
-  echo (
-    <page title="Php info">
-      {var_dump(phpinfo())}
-    </page>
-  );
-} else
+// if (requestUri() === "/info") {
+//   echo (
+//     <page title="Php info">
+//       {var_dump(phpinfo())}
+//     </page>
+//   );
+// } else
 if (requestUri() === "/create") {
   echo create_route();
 } else if (requestUri() === "/make") {

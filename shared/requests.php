@@ -4,7 +4,7 @@ function fetchGET(): array {
    return $_GET;
 }
 
-function getString(string $key): ?string {
+function getString(string $key): string {
   try {
     $value = $_GET[$key];
     return is_string($value) ? $value : null;
@@ -17,7 +17,7 @@ function fetchPOST(): array {
    return $_POST;
 }
 
-function postString(string $key): ?string {
+function postString(string $key): string {
   try {
     $value = $_POST[$key];
     return is_string($value) ? $value : null;
@@ -35,5 +35,5 @@ function postType(): string {
 }
 
 function requestUri(): string {
-  return $_SERVER['REQUEST_URI'];
+  return $_SERVER['REQUEST_URI'] . "";
 }
