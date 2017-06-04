@@ -44,13 +44,23 @@ class :puzzles-page extends :base-page {
     $total_pages = $crosswords->get_total() / $count;
     $nav_route = "puzzles?" . ($count != 10 ? "count=" . $count : "");
 
+    $prev_link = <a>Prev</a>;
+    if ($page > 0) {
+      $prev_link->setAttribute("href", $nav_route . "&page=" . ($page - 1));
+    }
+
+    $next_link = <a>Next</a>;
+    if ($page < ($total_pages - 1)) {
+      $next_link->setAttribute("href", $nav_route . "&page=" . ($page + 1));
+    }
+
     return (
       <content title="Puzzles">
         <h1>Pick a puzzle</h1>
         {$table}
         <nav>
-          <a href={$page > 0 ? $nav_route . "&page=" . ($page - 1) : ""}>Prev</a>
-          <a href={$page < ($total_pages -1) ? $nav_route . "&page=" . ($page + 1) : ""}>Next</a>
+          {$prev_link}
+          {$next_link}
         </nav>
       </content>
     );
