@@ -113,3 +113,48 @@ form label {
 form button {
   margin-top: 2em;
 }
+
+.cross-word {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background-color: #39403E;
+}
+
+.cross-word table {
+  width: auto;
+  border-spacing: 0;
+  border: 1px solid #39403E;
+}
+
+.cross-word table td {
+  background-color: white;
+  font-size: 3rem;
+  border: 1px solid #39403E;
+  padding: .5em;
+}
+
+.cross-word table td.empty {
+  background-color: #39403E;
+}
+
+.word-hints {
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 25%;
+}
+
+.word-hints ul {
+  list-style: none;
+  width: 25%;
+  text-align: left;
+  padding: 0;
+}
+
+.word-hints ul li:first-of-type {
+  font-family: 'Roboto Slab', serif;
+  font-size: 1.5em;
+  margin: .5em 0;
+}

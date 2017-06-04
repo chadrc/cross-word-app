@@ -23,8 +23,8 @@ class :puzzle-page extends :base-page {
         }
       }
 
-      $horz_list = <ul></ul>;
-      $vert_list = <ul></ul>;
+      $horz_list = <ul><li>Horizontal</li></ul>;
+      $vert_list = <ul><li>Vertical</li></ul>;
 
       $num = 1;
       foreach ($horz_words as $word) {
@@ -58,6 +58,7 @@ class :puzzle-page extends :base-page {
 
       return (
         <content title="Puzzle">
+          <h1>Solve</h1>
           <section class="cross-word">
             {$table}
           </section>
