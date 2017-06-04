@@ -19,19 +19,26 @@ function saveCrossWord(CrossWord $cross_word) {
   $store = new CrossWordStore($cross_word);
   $collection = database()->CrossWords;
   $collection->insertOne($store);
+  return $store;
 }
 
 class CrossWordStore {
+  public MongoDB\BSON\ObjectID $_id;
   public array $words;
   public MongoDB\BSON\UTCDateTime $created;
 
   public function __construct(CrossWord $cross_word) {
+    $this->_id = new MongoDB\BSON\ObjectID();
     $words = $cross_word->get_words();
     $this->words = [];
     $this->created = new MongoDB\BSON\UTCDateTime();
     foreach ($words as $word) {
       $this->words[] = new CrossWordStringStore($word);
     }
+  }
+
+  public function get_id() {
+    return $this->_id->__toString();
   }
 }
 

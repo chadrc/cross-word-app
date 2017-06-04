@@ -14,19 +14,39 @@ recordRequest(fetchPOST(), fetchGET(), requestUri());
 //     </page>
 //   );
 // } else
-if (requestUri() === "/create") {
-  echo create_route();
-} else if (requestUri() === "/make") {
-  echo make_route();
+
+$request_parts = new Vector(explode("/", requestUri()));
+$real_parts = Vector {};
+foreach ($request_parts as $value) {
+  if ($value !== "") {
+    $real_parts[] = $value;
+  }
+}
+if ($real_parts->containsKey(0)) {
+  if ($real_parts[0] === "create") {
+    echo create_route();
+  } else if ($real_parts[0] === "make") {
+    echo make_route();
+  } else if ($real_parts[0] === "puzzle") {
+    $puzzle_id = "";
+    if ($real_parts->containsKey(1)) {
+      $puzzle_id = $real_parts[1];
+    }
+    echo (
+      <page title="Puzzle">
+        <h1>Puzzle: {$puzzle_id}</h1>
+      </page>
+    );
+  }
 } else {
   echo (
-  <page title="Cross Word App">
-    <h1>Cross Word App</h1>
-    <nav>
-      <ul>
-        <li><a href="create">Create</a></li>
-      </ul>
-    </nav>
-  </page>
+    <page title="Cross Word App">
+      <h1>Cross Word App</h1>
+      <nav>
+        <ul>
+          <li><a href="create">Create</a></li>
+        </ul>
+      </nav>
+    </page>
   );
 }
