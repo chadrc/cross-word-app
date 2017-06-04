@@ -1,5 +1,5 @@
 <?hh
-require_once("../src/elements/BasePage.hh");
+require_once("../src/elements/pages/base-page.hh");
 
 class :route extends :x:element {
   attribute string match @required;

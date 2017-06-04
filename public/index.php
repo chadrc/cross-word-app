@@ -7,6 +7,7 @@ require_once("../src/elements/pages/notfound-page.hh");
 require_once("../src/elements/pages/index-page.hh");
 require_once("../src/elements/pages/puzzle-page.hh");
 require_once("../src/elements/pages/create-page.hh");
+require_once("../src/elements/pages/puzzles-page.hh");
 
 DB()->recordRequest(fetchPOST(), fetchGET(), requestUri());
 
@@ -20,6 +21,9 @@ echo (
     </route>
     <route match="/puzzle/[a-z 0-9]{24}">
       <puzzle-page />
+    </route>
+    <route match="/puzzles">
+      <puzzles-page />
     </route>
   </router>
 );

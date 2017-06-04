@@ -1,6 +1,6 @@
 <?hh
 
-class :main extends :x:element {
+class :content extends :x:element {
   attribute string title;
 
   protected function render(): XHPRoot {

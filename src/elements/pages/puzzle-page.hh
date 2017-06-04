@@ -1,6 +1,6 @@
 <?hh
-require_once("../src/elements/BasePage.hh");
-require_once("../src/elements/main.hh");
+require_once("../src/elements/pages/base-page.hh");
+require_once("../src/elements/content.hh");
 
 class :puzzle-page extends :base-page {
 
@@ -57,7 +57,7 @@ class :puzzle-page extends :base-page {
       }
 
       return (
-        <main title="Puzzle">
+        <content title="Puzzle">
           <section class="cross-word">
             {$table}
           </section>
@@ -65,7 +65,7 @@ class :puzzle-page extends :base-page {
             {$horz_list}
             {$vert_list}
           </section>
-        </main>
+        </content>
       );
     } else {
       return <not-found message="Puzzle could not be found." />;

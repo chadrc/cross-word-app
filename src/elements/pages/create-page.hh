@@ -1,6 +1,6 @@
 <?hh
-require_once("../src/elements/BasePage.hh");
-require_once("../src/elements/main.hh");
+require_once("../src/elements/pages/base-page.hh");
+require_once("../src/elements/content.hh");
 
 class :create-page extends :base-page {
   protected function render(): XHPRoot {
@@ -9,7 +9,7 @@ class :create-page extends :base-page {
 
   private function create_form(): XHPRoot {
     return (
-      <main title="Create a Cross Word">
+      <content title="Create a Cross Word">
         <h1>Create Cross Word</h1>
         <form action="create" method="post">
           <label for="words">Words (Comma separated)</label>
@@ -20,7 +20,7 @@ class :create-page extends :base-page {
 
           <button type="submit">Make</button>
         </form>
-      </main>
+      </content>
     );
   }
 
@@ -33,10 +33,10 @@ class :create-page extends :base-page {
 
     if ($words_array->count() !== $hints_array->count()) {
       return (
-        <main title="Couldn't Create Cross Word">
+        <content title="Couldn't Create Cross Word">
           <h3>Number of words and hints did not match.</h3>
           <a href="create">Try Again</a>
-        </main>
+        </content>
       );
     } else {
       $word_hint_map = Map {};
@@ -51,16 +51,16 @@ class :create-page extends :base-page {
         $cross_word = create_cross_word($word_hint_map);
       } catch (CrossWordGenerationException $e) {
         return (
-          <main title="Couldn't Create Cross Word">
+          <content title="Couldn't Create Cross Word">
             <h3>Sorry, we were unable to generate a cross word with your words.</h3>
             <h5>You may either adjust your words or try to submit again.</h5>
-          </main>
+          </content>
         );
       }
 
       $store = DB()->saveCrossWord($cross_word);
       header("Location: /puzzle/" . $store->get_id());
-      return <main title="Crossword Created" />;
+      return <content title="Crossword Created" />;
     }
   }
 }

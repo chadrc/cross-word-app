@@ -1,4 +1,6 @@
 <?hh
+require_once("../src/elements/pages/base-page.hh");
+require_once("../src/elements/content.hh");
 
 class :not-found extends :base-page {
   attribute string message;
@@ -8,10 +10,10 @@ class :not-found extends :base-page {
       $message = $this->:message;
     }
     return (
-      <main>
+      <content>
         <h1>Not Found</h1>
         <p>{$message}</p>
-      </main>
+      </content>
     );
   }
 }
