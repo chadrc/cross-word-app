@@ -3,10 +3,10 @@ require_once("../src/globals.php");
 require_once("../vendor/autoload.php");
 require_once("../src/database/Impl.hh");
 require_once("../src/elements/router/router.hh");
-require_once("../src/elements/404Page.hh");
-require_once("../src/elements/IndexPage.hh");
-require_once("../src/elements/PuzzlePage.hh");
-require_once("../src/elements/CreatePage.hh");
+require_once("../src/elements/pages/404Page.hh");
+require_once("../src/elements/pages/IndexPage.hh");
+require_once("../src/elements/pages/PuzzlePage.hh");
+require_once("../src/elements/pages/CreatePage.hh");
 
 DB()->recordRequest(fetchPOST(), fetchGET(), requestUri());
 
