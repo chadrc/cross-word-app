@@ -1,5 +1,5 @@
 <?hh
-require_once("../shared/CrossWordCell.hh");
+require_once("../shared/cross-word/CrossWordCell.hh");
 require_once("../shared/utils.hh");
 
 class Coordinate {

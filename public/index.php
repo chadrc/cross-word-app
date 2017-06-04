@@ -1,4 +1,5 @@
 <?hh
+require_once("../vendor/autoload.php");
 require_once("../shared/Database.hh");
 require_once("../shared/requests.php");
 require_once("../shared/make.hh");

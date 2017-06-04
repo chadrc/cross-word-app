@@ -1,5 +1,5 @@
 <?hh
-require_once("../shared/CrossWordString.hh");
+require_once("../shared/cross-word/CrossWordString.hh");
 require_once("../shared/utils.hh");
 
 class CrossWordCell implements Printable {

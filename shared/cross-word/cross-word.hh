@@ -1,5 +1,5 @@
 <?hh
-require_once("../shared/CrossWordGenerator.hh");
+require_once("../shared/cross-word/CrossWordGenerator.hh");
 require_once("../shared/utils.hh");
 
 function create_cross_word(Map<string, string> $wordHintMap): CrossWord {
