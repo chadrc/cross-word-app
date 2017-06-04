@@ -4,6 +4,7 @@ require_once("../shared/page.hh");
 require_once("../shared/requests.php");
 require_once("../shared/create.hh");
 require_once("../shared/make.hh");
+require_once("../shared/pages/PuzzlePage.hh");
 
 recordRequest(fetchPOST(), fetchGET(), requestUri());
 
@@ -28,15 +29,7 @@ if ($real_parts->containsKey(0)) {
   } else if ($real_parts[0] === "make") {
     echo make_route();
   } else if ($real_parts[0] === "puzzle") {
-    $puzzle_id = "";
-    if ($real_parts->containsKey(1)) {
-      $puzzle_id = $real_parts[1];
-    }
-    echo (
-      <page title="Puzzle">
-        <h1>Puzzle: {$puzzle_id}</h1>
-      </page>
-    );
+    echo <puzzle-page path_params={$real_parts} />;
   }
 } else {
   echo (
