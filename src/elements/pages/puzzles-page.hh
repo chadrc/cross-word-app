@@ -36,7 +36,7 @@ class :puzzles-page extends :base-page {
           <td>{$value->get_words()->count()}</td>
           <td>({$width}, {$height})</td>
           <td>{$value->get_created()->format("Y-m-d")}</td>
-          <td><button type="button">Play</button></td>
+          <td><a href={"puzzle/" . $value->get_id()}>Play</a></td>
         </tr>
       );
     }

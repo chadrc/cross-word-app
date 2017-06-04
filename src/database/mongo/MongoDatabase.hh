@@ -82,6 +82,7 @@ class MongoDatabase implements Database {
       }
     }
     $cw = new CrossWord($strings, $grid);
+    $cw->set_id($store->_id . "");
     $cw->set_created($store->created->toDateTime());
     return $cw;
   }
