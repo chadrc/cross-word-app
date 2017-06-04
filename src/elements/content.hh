@@ -12,6 +12,13 @@ class :content extends :x:element {
         <link rel="stylesheet" href="/main.css" />
       </head>
       <body>
+        {requestUri() === "/" ? "" :
+          <nav>
+            <a href="/">Home</a>
+            <a href="/create">Create</a>
+            <a href="/puzzles">Play</a>
+          </nav>
+        }
         <main>
           {$this->getChildren()}
         </main>
