@@ -39,6 +39,8 @@ class CrossWordGenerator {
       foreach ($this->words as $word) {
         $this->join_attempt($word);
       }
+
+      $this->words[] = $first;
     }
     $this->cross_word = new CrossWord($this->words, $this->grid);
   }

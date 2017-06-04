@@ -7,9 +7,6 @@ function make_route() {
   $words_array = new Vector(explode(",", $words));
   $hints_array = new Vector(explode(",", $hints));
 
-  // var_dump(trim($words_array[0]));
-  // var_dump($hints_array[0]);
-
   if ($words_array->count() !== $hints_array->count()) {
     echo (
       <page title="Couldn't Create Cross Word">
