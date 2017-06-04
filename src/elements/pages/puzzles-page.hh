@@ -41,10 +41,17 @@ class :puzzles-page extends :base-page {
       );
     }
 
+    $total_pages = $crosswords->get_total() / $count;
+    $nav_route = "puzzles?" . ($count != 10 ? "count=" . $count : "");
+
     return (
       <content title="Puzzles">
         <h1>Pick a puzzle</h1>
         {$table}
+        <nav>
+          <a href={$page > 0 ? $nav_route . "&page=" . ($page - 1) : ""}>Prev</a>
+          <a href={$page < ($total_pages -1) ? $nav_route . "&page=" . ($page + 1) : ""}>Next</a>
+        </nav>
       </content>
     );
   }
