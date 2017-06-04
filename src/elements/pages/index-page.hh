@@ -8,10 +8,8 @@ class :index-page extends :base-page {
       <content title="Cross Word App">
         <h1>Cross Word App</h1>
         <nav>
-          <ul>
-            <li><a href="create">Create</a></li>
-            <li><a href="puzzles">Play</a></li>
-          </ul>
+          <a href="create">Create</a>
+          <a href="puzzles">Play</a>
         </nav>
       </content>
     );

@@ -1,7 +1,11 @@
 
 body {
+  padding: 0;
+  margin: 0;
   font-family: 'Roboto', sans-serif;
   font-size: 16px;
+  background-color: #E4FFF9;
+  color: #39403E;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -10,10 +14,40 @@ h1, h2, h3, h4, h5, h6 {
 
 main {
   display: flex;
-  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 main>h1:first-of-type {
+  margin-top: .5em;
   text-align: center;
   font-size: 3em;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+}
+
+nav a {
+  font-family: 'Roboto Slab', serif;
+  padding: .5em;
+  font-size: 1.2em;
+  text-decoration: none;
+  background-color: #D7F2FF;
+  cursor: pointer;
+  color: #39403E;
+  margin: .5em;
+}
+
+nav a[!href] {
+  cursor: default;
+}
+
+nav a:hover {
+  background-color: #C4E6E8;
+}
+
+nav a:active {
+  background-color: #C4E8D6;
 }
