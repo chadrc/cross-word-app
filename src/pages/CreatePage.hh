@@ -4,10 +4,10 @@ require_once("../src/pages/page.hh");
 
 class :create-page extends :base-page {
   protected function render(): XHPRoot {
-    return requestMethod() === "POST" ? $this->createCrossWord() : $this->createForm();
+    return requestMethod() === "POST" ? $this->form_submit() : $this->createForm();
   }
 
-  private function createForm(): XHPRoot {
+  private function create_form(): XHPRoot {
     return (
       <page title="Create a Cross Word">
         <h1>Create Cross Word</h1>
@@ -24,7 +24,7 @@ class :create-page extends :base-page {
     );
   }
 
-  private function createCrossWord(): XHPRoot {
+  private function form_submit(): XHPRoot {
     $words = postString("words");
     $hints = postString("hints");
 
