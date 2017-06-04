@@ -47,7 +47,7 @@ class :puzzle-page extends :base-page {
       $table = <table></table>;
       for ($x=$limits->max_y(); $x>=$limits->min_y(); $x--) {
         $table_row = <tr></tr>;
-        for ($y=$limits->min_x(); $y<$limits->max_x(); $y++) {
+        for ($y=$limits->min_x(); $y<=$limits->max_x(); $y++) {
           $cell = $grid->get_cell($y, $x);
           $table_row->appendChild(
             <td class={$cell === null ? "empty" : ""}></td>
