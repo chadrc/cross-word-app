@@ -34,6 +34,10 @@ function postType(): string {
    }
 }
 
+function requestMethod(): string {
+  return $_SERVER['REQUEST_METHOD'] . "";
+}
+
 function requestUri(): string {
   return $_SERVER['REQUEST_URI'] . "";
 }
