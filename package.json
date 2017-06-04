@@ -16,7 +16,7 @@
     "sbs": "npm stop && npm run build && npm start",
     "kbs": "npm run kill && npm run build && npm start",
     "flog": "docker logs -f `cat cross-word-app.container.id`",
-    "watch": "watchman-make -p '**/*.hh' '**/*.php' --make npm -t 'run kbs'"
+    "watch": "watchman-make -p '**/*.hh' '**/*.php' '**/*.css' --make npm -t 'run kbs'"
   },
   "author": "",
   "license": "MIT"

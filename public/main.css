@@ -1,5 +1,19 @@
 
-  body {
-    font-family: 'Roboto', sans-serif;
-    /*font-family: 'Roboto Slab', serif;*/
-  }
+body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Roboto Slab', serif;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+}
+
+main>h1:first-of-type {
+  text-align: center;
+  font-size: 3em;
+}
