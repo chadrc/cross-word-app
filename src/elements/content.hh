@@ -12,7 +12,9 @@ class :content extends :x:element {
         <link rel="stylesheet" href="main.css" />
       </head>
       <body>
-        {$this->getChildren()}
+        <main>
+          {$this->getChildren()}
+        </main>
       </body>
       </html>
     );
