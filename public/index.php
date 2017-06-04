@@ -1,7 +1,7 @@
 <?hh
+require_once("../src/globals.php");
 require_once("../vendor/autoload.php");
 require_once("../src/Database.hh");
-require_once("../src/requests.php");
 require_once("../src/make.hh");
 require_once("../src/pages/IndexPage.hh");
 require_once("../src/pages/PuzzlePage.hh");
