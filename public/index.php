@@ -27,8 +27,6 @@ foreach ($request_parts as $value) {
 if ($real_parts->containsKey(0)) {
   if ($real_parts[0] === "create") {
     echo <create-page path-params={$real_parts} />;
-  } else if ($real_parts[0] === "make") {
-    echo make_route();
   } else if ($real_parts[0] === "puzzle") {
     echo <puzzle-page path-params={$real_parts} />;
   }
