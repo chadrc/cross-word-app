@@ -2,9 +2,9 @@
 require_once("../src/globals.php");
 require_once("../vendor/autoload.php");
 require_once("../src/database/Impl.hh");
-require_once("../src/pages/IndexPage.hh");
-require_once("../src/pages/PuzzlePage.hh");
-require_once("../src/pages/CreatePage.hh");
+require_once("../src/elements/IndexPage.hh");
+require_once("../src/elements/PuzzlePage.hh");
+require_once("../src/elements/CreatePage.hh");
 
 DB()->recordRequest(fetchPOST(), fetchGET(), requestUri());
 
