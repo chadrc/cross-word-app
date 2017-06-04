@@ -1,4 +1,5 @@
 <?hh
+require_once("../shared/pages/page.hh");
 
 function make_route() {
   $words = postString("words");

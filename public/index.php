@@ -1,10 +1,10 @@
 <?hh
 require_once("../shared/Database.hh");
-require_once("../shared/page.hh");
 require_once("../shared/requests.php");
-require_once("../shared/create.hh");
 require_once("../shared/make.hh");
+require_once("../shared/pages/IndexPage.hh");
 require_once("../shared/pages/PuzzlePage.hh");
+require_once("../shared/pages/CreatePage.hh");
 
 recordRequest(fetchPOST(), fetchGET(), requestUri());
 
@@ -25,21 +25,12 @@ foreach ($request_parts as $value) {
 }
 if ($real_parts->containsKey(0)) {
   if ($real_parts[0] === "create") {
-    echo create_route();
+    echo <create-page path-params={$real_parts} />;
   } else if ($real_parts[0] === "make") {
     echo make_route();
   } else if ($real_parts[0] === "puzzle") {
-    echo <puzzle-page path_params={$real_parts} />;
+    echo <puzzle-page path-params={$real_parts} />;
   }
 } else {
-  echo (
-    <page title="Cross Word App">
-      <h1>Cross Word App</h1>
-      <nav>
-        <ul>
-          <li><a href="create">Create</a></li>
-        </ul>
-      </nav>
-    </page>
-  );
+  echo <index-page path-params={$real_parts} />;
 }

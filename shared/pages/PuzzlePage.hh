@@ -1,12 +1,13 @@
 <?hh
 require_once("../shared/pages/BasePage.hh");
+require_once("../shared/pages/page.hh");
 
 class :puzzle-page extends :base-page {
 
   protected function render(): XHPRoot {
     $puzzle_id = "";
-    if ($this->:path_params->containsKey(1)) {
-      $puzzle_id = $this->:path_params[1];
+    if ($this->:path-params->containsKey(1)) {
+      $puzzle_id = $this->:path-params[1];
     }
 
     $cross_word = getCrossWord($puzzle_id);
