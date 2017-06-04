@@ -1,8 +1,4 @@
 <?hh
-require_once("../shared/page.hh");
-require_once("../shared/requests.php");
-require_once("../shared/cross-word.hh");
-
 
 function make_route() {
   $words = postString("words");
@@ -39,11 +35,10 @@ function make_route() {
           <h5>You may either adjust your words or try to submit again.</h5>
         </page>
       );
+      return;
     }
 
-    // $id = uniqid();
-    // $json = json_encode(get_object_vars(new CrossWordStore($cross_word)));
-    // file_put_contents("store/" . $id . ".xw.json", $json);
+    $store = saveCrossWord($cross_word);
 
     if ($cross_word !== null) {
       $horz_words = Vector {};
@@ -103,44 +98,4 @@ function make_route() {
     }
   }
   return <page title="An Error Occurred"></page>;
-}
-
-
-class CrossWordStore {
-  public array $words;
-
-  public function __construct(CrossWord $cross_word) {
-    $words = $cross_word->get_words();
-    $this->words = [];
-    foreach ($words as $word) {
-      $this->words[] = new CrossWordStringStore($word);
-    }
-  }
-}
-
-class CrossWordStringStore {
-  public array $cells;
-  public string $word;
-  public string $hint;
-
-  public function __construct(CrossWordString $string) {
-    $this->word = $string->get_word();
-    $this->hint = $string->get_hint();
-    $this->cells = [];
-    foreach ($string->get_cells() as $cell) {
-      $this->cells[] = new CrossWordCellStore($cell);
-    }
-  }
-}
-
-class CrossWordCellStore {
-  public string $letter;
-  public int $x;
-  public int $y;
-
-  public function __construct(CrossWordCell $cell) {
-    $this->letter = $cell->get_letter();
-    $this->x = $cell->get_x();
-    $this->y = $cell->get_y();
-  }
 }

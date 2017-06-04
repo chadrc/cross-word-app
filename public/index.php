@@ -1,4 +1,5 @@
 <?hh
+require_once("../shared/Database.hh");
 require_once("../shared/page.hh");
 require_once("../shared/requests.php");
 require_once("../shared/create.hh");
