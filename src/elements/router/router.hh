@@ -6,6 +6,12 @@ class :router extends :x:element {
 
   protected function render(): XHPRoot {
     $matched = null;
+    $uri_parts = new Vector(explode("?", requestUri()));
+    $uri = $uri_parts[0];
+    $query = "";
+    if ($uri_parts->count() > 1) {
+      $query = $uri_parts[1];
+    }
     foreach ($this->getChildren() as $route) {
       if ($route instanceof :route) {
         $raw_match = $route->get_match();
@@ -19,7 +25,7 @@ class :router extends :x:element {
           $match .= $char;
         }
         $match = "/" . $match . "$/";
-        if (preg_match($match, requestUri()) === 1) {
+        if (preg_match($match, $uri) === 1) {
           $matched = $route;
         }
 
