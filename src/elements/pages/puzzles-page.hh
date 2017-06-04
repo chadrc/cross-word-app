@@ -22,6 +22,7 @@ class :puzzles-page extends :base-page {
         <th>Word Count</th>
         <th>Size</th>
         <th>Created</th>
+        <th>Play</th>
       </tr>
     );
 

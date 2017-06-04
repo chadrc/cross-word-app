@@ -16,6 +16,8 @@ main {
   display: flex;
   align-items: center;
   flex-direction: column;
+  width: 80%;
+  margin: auto;
 }
 
 main>h1:first-of-type {
@@ -29,7 +31,7 @@ nav {
   justify-content: center;
 }
 
-nav a {
+a {
   font-family: 'Roboto Slab', serif;
   padding: .5em;
   font-size: 1.2em;
@@ -40,14 +42,43 @@ nav a {
   margin: .5em;
 }
 
-nav a[!href] {
-  cursor: default;
-}
-
-nav a:hover {
+a:hover {
   background-color: #C4E6E8;
 }
 
-nav a:active {
+a:active {
   background-color: #C4E8D6;
+}
+
+a:not([href]) {
+  cursor: default;
+  opacity: .5;
+}
+
+a:not([href]):hover {
+  background-color: #D7F2FF;
+}
+
+a:not([href]):active {
+  background-color: #D7F2FF;
+}
+
+table {
+  width: 100%;
+  border-spacing: 1em;
+}
+
+table tr {
+
+}
+
+table tr>td,
+table tr>th {
+  text-align: center;
+  padding: .5em;
+  margin: .5em;
+}
+
+table a {
+  font-size: 1rem;
 }
