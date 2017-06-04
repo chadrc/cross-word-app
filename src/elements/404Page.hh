@@ -8,10 +8,10 @@ class :not-found extends :base-page {
       $message = $this->:message;
     }
     return (
-      <page>
+      <main>
         <h1>Not Found</h1>
         <p>{$message}</p>
-      </page>
+      </main>
     );
   }
 }
