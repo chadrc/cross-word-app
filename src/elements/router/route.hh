@@ -5,8 +5,10 @@ class :route extends :x:element {
   attribute string match @required;
   children (:base-page);
 
+  private string $path = "";
+
   protected function render(): XHPRoot {
-    $uri_parts = new Vector(explode("/", requestUri()));
+    $uri_parts = new Vector(explode("/", $this->path));
     $path = Vector {};
     foreach ($uri_parts as $value) {
       if ($value !== "") {
@@ -27,5 +29,9 @@ class :route extends :x:element {
 
   public function get_match(): string {
     return $this->:match;
+  }
+
+  public function set_path(string $path) {
+    $this->path = $path;
   }
 }

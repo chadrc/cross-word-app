@@ -27,6 +27,7 @@ class :router extends :x:element {
         $match = "/" . $match . "$/";
         if (preg_match($match, $uri) === 1) {
           $matched = $route;
+          $matched->set_path($uri);
         }
 
         if ($matched !== null) {
