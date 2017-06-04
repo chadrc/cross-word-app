@@ -6,8 +6,8 @@ class :puzzle-page extends :base-page {
 
   protected function render(): XHPRoot {
     $puzzle_id = "";
-    if ($this->:path-params->containsKey(1)) {
-      $puzzle_id = $this->:path-params[1];
+    if ($this->path->containsKey(1)) {
+      $puzzle_id = $this->path[1];
     }
 
     $cross_word = DB()->getCrossWord($puzzle_id);

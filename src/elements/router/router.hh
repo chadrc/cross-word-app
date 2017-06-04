@@ -2,7 +2,6 @@
 require_once("../src/elements/router/route.hh");
 
 class :router extends :x:element {
-  attribute string path;
   children (:route)+;
 
   protected function render(): XHPRoot {
@@ -20,7 +19,7 @@ class :router extends :x:element {
           $match .= $char;
         }
         $match = "/" . $match . "/";
-        if (preg_match($match, $this->:path) === 1) {
+        if (preg_match($match, requestUri()) === 1) {
           $matched = $route;
         }
       }

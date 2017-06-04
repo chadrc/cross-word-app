@@ -25,8 +25,8 @@ class :create-page extends :base-page {
   }
 
   private function form_submit(): XHPRoot {
-    $words = postString("words");
-    $hints = postString("hints");
+    $words = $this->post_data["words"];
+    $hints = $this->post_data["hints"];
 
     $words_array = new Vector(explode(",", $words));
     $hints_array = new Vector(explode(",", $hints));
