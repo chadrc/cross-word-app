@@ -8,6 +8,8 @@ class :content extends :x:element {
       <html>
       <head>
         <title>{$this->:title}</title>
+        <link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Slab" rel="stylesheet" />
+        <link rel="stylesheet" href="main.css" />
       </head>
       <body>
         {$this->getChildren()}

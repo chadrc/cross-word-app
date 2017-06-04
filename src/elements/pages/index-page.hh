@@ -10,6 +10,7 @@ class :index-page extends :base-page {
         <nav>
           <ul>
             <li><a href="create">Create</a></li>
+            <li><a href="puzzles">Play</a></li>
           </ul>
         </nav>
       </content>

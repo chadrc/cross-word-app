@@ -30,6 +30,33 @@ class MongoDatabase implements Database {
 
   public function getCrossWord(string $id): ?CrossWord {
     $store = $this->crossword->findOne(['_id' => new MongoDB\BSON\ObjectID($id)]);
+    return $this->storeToCrossWord($store);
+  }
+
+  public function getCrossWords(int $count, int $page): Page<CrossWord> {
+    $cursor = $this->crossword->find(
+      [],
+      [
+          'limit' => $count,
+          'skip' => ($page * $count),
+          'sort' => ['created' => -1],
+      ]
+    );
+
+    $crosswords = Vector {};
+    foreach ($cursor as $document) {
+      $cw = $this->storeToCrossWord($document);
+      if ($cw !== null) {
+        $crosswords[] = $cw;
+      }
+    }
+
+    $total = $this->crossword->count();
+
+    return new Page<CrossWord>($crosswords, $total);
+  }
+
+  private function storeToCrossWord(MongoDB\Model\BSONDocument $store): ?CrossWord {
     if ($store === null) {
       return null;
     }
@@ -54,6 +81,8 @@ class MongoDatabase implements Database {
         }
       }
     }
-    return new CrossWord($strings, $grid);
+    $cw = new CrossWord($strings, $grid);
+    $cw->set_created($store->created->toDateTime());
+    return $cw;
   }
 }
