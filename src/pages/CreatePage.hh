@@ -4,7 +4,7 @@ require_once("../src/pages/page.hh");
 
 class :create-page extends :base-page {
   protected function render(): XHPRoot {
-    return requestMethod() === "POST" ? $this->form_submit() : $this->createForm();
+    return requestMethod() === "POST" ? $this->form_submit() : $this->create_form();
   }
 
   private function create_form(): XHPRoot {
@@ -58,7 +58,7 @@ class :create-page extends :base-page {
         );
       }
 
-      $store = saveCrossWord($cross_word);
+      $store = DB()->saveCrossWord($cross_word);
       header("Location: /puzzle/" . $store->get_id());
       return (
         <page title="Crossword Created">

@@ -1,21 +1,12 @@
 <?hh
 require_once("../src/globals.php");
 require_once("../vendor/autoload.php");
-require_once("../src/Database.hh");
-require_once("../src/make.hh");
+require_once("../src/database/Impl.hh");
 require_once("../src/pages/IndexPage.hh");
 require_once("../src/pages/PuzzlePage.hh");
 require_once("../src/pages/CreatePage.hh");
 
-recordRequest(fetchPOST(), fetchGET(), requestUri());
-
-// if (requestUri() === "/info") {
-//   echo (
-//     <page title="Php info">
-//       {var_dump(phpinfo())}
-//     </page>
-//   );
-// } else
+DB()->recordRequest(fetchPOST(), fetchGET(), requestUri());
 
 $request_parts = new Vector(explode("/", requestUri()));
 $real_parts = Vector {};

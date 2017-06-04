@@ -10,7 +10,7 @@ class :puzzle-page extends :base-page {
       $puzzle_id = $this->:path-params[1];
     }
 
-    $cross_word = getCrossWord($puzzle_id);
+    $cross_word = DB()->getCrossWord($puzzle_id);
 
     if ($cross_word !== null) {
       $horz_words = Vector {};
