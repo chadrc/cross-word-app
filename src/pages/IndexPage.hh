@@ -1,6 +1,6 @@
 <?hh
-require_once("../shared/pages/BasePage.hh");
-require_once("../shared/pages/page.hh");
+require_once("../src/pages/BasePage.hh");
+require_once("../src/pages/page.hh");
 
 class :index-page extends :base-page {
   protected function render(): XHPRoot {

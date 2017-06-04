@@ -1,7 +1,7 @@
 <?hh
-require_once("../shared/cross-word/CrossWord.hh");
-require_once("../shared/cross-word/WordJoinData.hh");
-require_once("../shared/cross-word/CrossWordGenerationExceptions.hh");
+require_once("../src/cross-word/CrossWord.hh");
+require_once("../src/cross-word/WordJoinData.hh");
+require_once("../src/cross-word/CrossWordGenerationExceptions.hh");
 
 class CrossWordGenerator {
   private CrossWordGrid $grid;

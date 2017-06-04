@@ -1,11 +1,11 @@
 <?hh
 require_once("../vendor/autoload.php");
-require_once("../shared/Database.hh");
-require_once("../shared/requests.php");
-require_once("../shared/make.hh");
-require_once("../shared/pages/IndexPage.hh");
-require_once("../shared/pages/PuzzlePage.hh");
-require_once("../shared/pages/CreatePage.hh");
+require_once("../src/Database.hh");
+require_once("../src/requests.php");
+require_once("../src/make.hh");
+require_once("../src/pages/IndexPage.hh");
+require_once("../src/pages/PuzzlePage.hh");
+require_once("../src/pages/CreatePage.hh");
 
 recordRequest(fetchPOST(), fetchGET(), requestUri());
 

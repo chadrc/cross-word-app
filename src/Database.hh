@@ -1,5 +1,5 @@
 <?hh
-require_once("../shared/cross-word/cross-word.hh");
+require_once("../src/cross-word/cross-word.hh");
 
 function database(): MongoDB\Database {
   return (new MongoDB\Client("mongodb://172.17.0.1:27017"))->CrossWordApp;
