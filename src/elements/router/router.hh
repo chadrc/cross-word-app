@@ -18,14 +18,18 @@ class :router extends :x:element {
           }
           $match .= $char;
         }
-        $match = "/" . $match . "/";
+        $match = "/" . $match . "$/";
         if (preg_match($match, requestUri()) === 1) {
           $matched = $route;
+        }
+
+        if ($matched !== null) {
+          break;
         }
       }
     }
     if ($matched === null) {
-      $matched = <html></html>;
+      $matched = <not-found message="Page not found." />;
     }
     return $matched;
   }

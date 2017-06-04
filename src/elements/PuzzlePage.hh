@@ -68,11 +68,7 @@ class :puzzle-page extends :base-page {
         </page>
       );
     } else {
-      return (
-        <page title="Puzzle Not Found">
-          <h1>We're sorry, the cross word you requested does not exist.</h1>
-        </page>
-      );
+      return <not-found message="Puzzle could not be found." />;
     }
   }
 }

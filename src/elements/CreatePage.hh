@@ -60,10 +60,7 @@ class :create-page extends :base-page {
 
       $store = DB()->saveCrossWord($cross_word);
       header("Location: /puzzle/" . $store->get_id());
-      return (
-        <page title="Crossword Created">
-        </page>
-      );
+      return <page title="Crossword Created" />;
     }
   }
 }
