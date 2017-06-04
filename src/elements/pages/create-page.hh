@@ -13,9 +13,9 @@ class :create-page extends :base-page {
         <h1>Create Cross Word</h1>
         <form action="create" method="post">
           <label for="words">Words (Comma separated)</label>
-          <textarea id="words" name="words" />
-
           <label for="hints">Hints (Comma separated)</label>
+          
+          <textarea id="words" name="words" />
           <textarea id="hints" name="hints" />
 
           <button type="submit">Make</button>
