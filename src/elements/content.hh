@@ -17,11 +17,14 @@ class :content extends :x:element {
       </head>
       <body>
         {requestUri() === "/" ? "" :
-          <nav>
-            <a href="/">Home</a>
-            <a href="/create">Create</a>
-            <a href="/puzzles">Play</a>
-          </nav>
+          <header>
+            <h3>Crossword App</h3>
+            <nav>
+              <a href="/">Home</a>
+              <a href="/create">Create</a>
+              <a href="/puzzles">Play</a>
+            </nav>
+          </header>
         }
         <main>
           {$this->getChildren()}
