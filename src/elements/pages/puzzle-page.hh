@@ -1,6 +1,7 @@
 <?hh
 require_once("../src/elements/pages/base-page.hh");
 require_once("../src/elements/content.hh");
+require_once("../src/elements/cross-word-game.hh");
 
 class :puzzle-page extends :base-page {
 
@@ -66,6 +67,9 @@ class :puzzle-page extends :base-page {
             {$horz_list}
             {$vert_list}
           </section>
+          <x:js-scope>
+            <cross-word-game />
+          </x:js-scope>
         </content>
       );
     } else {
