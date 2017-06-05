@@ -16,8 +16,16 @@
     "sbs": "npm stop && npm run build && npm start",
     "kbs": "npm run kill && npm run build && npm start",
     "flog": "docker logs -f `cat cross-word-app.container.id`",
-    "watch": "watchman-make -p '**/*.hh' '**/*.php' '**/*.css' --make npm -t 'run kbs'"
+    "watch": "watchman-make -p '**/*.hh' '**/*.php' '**/*.css' --make npm -t 'run kbs'",
+    "bundle": "browserify -r xhpjs -r react -r ./public/main.js -o public/bundle.js"
   },
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {
+    "prop-types": "^15.5.10",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "xhpjs": "^1.0.0"
+  }
 }

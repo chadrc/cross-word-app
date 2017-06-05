@@ -1,14 +1,12 @@
+React.render = ReactDOM.render;
 
-class CrossWordGame extends React.Component {
+class _CrossWordGame extends React.Component {
   contructor(props) {
-    super(props);
   }
 
   render() {
-    return (
-      <section>
-        <h5>Cross Word Game</h5>
-      </section>
-    );
+    return React.createElement("section", {}, "CrossWordGame");
   }
 }
+
+var CrossWordGame = _CrossWordGame;

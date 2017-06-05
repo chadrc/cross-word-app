@@ -1,5 +1,7 @@
 # App
 cross-word-app.container.id
+public/bundle.js
+public/xhpjs.js
 
 # Node
 node_modules
