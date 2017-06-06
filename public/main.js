@@ -1,6 +1,6 @@
 React.render = ReactDOM.render;
 
-class _CrossWordGame extends React.Component {
+class CrossWordGame extends React.Component {
   contructor(props) {
   }
 
@@ -9,4 +9,4 @@ class _CrossWordGame extends React.Component {
   }
 }
 
-var CrossWordGame = _CrossWordGame;
+window.CrossWordGame = CrossWordGame;
