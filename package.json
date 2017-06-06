@@ -17,7 +17,7 @@
     "kbs": "npm run kill && npm run build && npm start",
     "flog": "docker logs -f `cat cross-word-app.container.id`",
     "watch": "watchman-make -p '**/*.hh' '**/*.php' '**/*.css' '**/*.js' --make npm -t 'run kbs'",
-    "copy-vendor-files": "cp node_modules/xhpjs/xhpjs.js public/vendor/xhpjs.js && cp node_modules/react/dist/react.js public/vendor/react.js && cp node_modules/react-dom/dist/react-dom.js public/vendor/react-dom.js && cp node_modules/prop-types/prop-types.js public/vendor/prop-types.js"
+    "copy-vendor-files": "mkdir -p public/vendor && cp node_modules/xhpjs/xhpjs.js public/vendor/xhpjs.js && cp node_modules/react/dist/react.js public/vendor/react.js && cp node_modules/react-dom/dist/react-dom.js public/vendor/react-dom.js && cp node_modules/prop-types/prop-types.js public/vendor/prop-types.js"
   },
   "author": "",
   "license": "MIT",
