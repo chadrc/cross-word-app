@@ -1,6 +1,7 @@
 # App
 cross-word-app.container.id
 public/vendor/*
+public/components/*
 
 # Node
 node_modules

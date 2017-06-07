@@ -2,10 +2,10 @@
 
 class :content extends :x:element {
   attribute string title;
+  attribute Vector<string> components = Vector {};
 
   protected function render(): XHPRoot {
-    return (
-      <html>
+    $head = (
       <head>
         <title>{$this->:title}</title>
         <script src="/vendor/react.js"></script>
@@ -15,6 +15,13 @@ class :content extends :x:element {
         <link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Slab" rel="stylesheet" />
         <link rel="stylesheet" href="/main.css" />
       </head>
+    );
+    foreach ($this->:components as $component) {
+      $head->appendChild(<script src={"/components/" . $component . ".js"}></script>);
+    }
+    return (
+      <html>
+      {$head}
       <body>
         {requestUri() === "/" ? "" :
           <header>

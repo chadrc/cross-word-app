@@ -4,10 +4,12 @@
   "description": "Simple cross word app.",
   "main": "index.js",
   "scripts": {
+    "postinstall": "npm run copy-vendor-files",
     "start": "docker run -d --cidfile='cross-word-app.container.id' --rm -p 3000:80 cross-word-app:local",
     "stop": "if [ -f cross-word-app.container.id ]; then echo 'Stopping container...'; docker stop `cat cross-word-app.container.id`; echo 'Removing container...'; docker rm `cat cross-word-app.container.id`; echo 'Removing container id file.'; rm cross-word-app.container.id; else echo 'No container id file.'; fi",
     "kill": "if [ -f cross-word-app.container.id ]; then echo 'Killing container...'; docker kill `cat cross-word-app.container.id`; echo 'Removing container id file.'; rm cross-word-app.container.id; else echo 'No container id file.'; fi",
-    "build": "docker build -t cross-word-app:local .",
+    "build": "npm run transpile && docker build -t cross-word-app:local .",
+    "transpile": "babel src/public/components --out-dir public/components",
     "enter-build": "docker run --rm --tty --interactive cross-word-app:local /bin/bash -l",
     "build-base": "docker build -f Dockerfile.base -t base-cross-word-image:local .",
     "build-setup": "docker build -f Dockerfile.setup -t setup-cross-word-image:local .",
@@ -16,12 +18,15 @@
     "sbs": "npm stop && npm run build && npm start",
     "kbs": "npm run kill && npm run build && npm start",
     "flog": "docker logs -f `cat cross-word-app.container.id`",
-    "watch": "watchman-make -p '**/*.hh' '**/*.php' '**/*.css' '**/*.js' --make npm -t 'run kbs'",
+    "watch": "watchman-make -p 'src/**/*' 'public/*' --make npm -t 'run kbs'",
     "copy-vendor-files": "mkdir -p public/vendor && cp node_modules/xhpjs/xhpjs.js public/vendor/xhpjs.js && cp node_modules/react/dist/react.js public/vendor/react.js && cp node_modules/react-dom/dist/react-dom.js public/vendor/react-dom.js && cp node_modules/prop-types/prop-types.js public/vendor/prop-types.js"
   },
   "author": "",
   "license": "MIT",
-  "devDependencies": {},
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-react": "^6.24.1"
+  },
   "dependencies": {
     "prop-types": "^15.5.10",
     "react": "^15.5.4",

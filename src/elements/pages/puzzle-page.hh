@@ -58,7 +58,7 @@ class :puzzle-page extends :base-page {
       }
 
       return (
-        <content title="Puzzle">
+        <content title="Puzzle" components={Vector {"CrossWordGame"}}>
           <h1>Solve</h1>
           <section class="cross-word">
             {$table}

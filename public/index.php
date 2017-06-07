@@ -8,7 +8,6 @@ require_once("../src/elements/pages/index-page.hh");
 require_once("../src/elements/pages/puzzle-page.hh");
 require_once("../src/elements/pages/create-page.hh");
 require_once("../src/elements/pages/puzzles-page.hh");
-
 DB()->recordRequest(fetchPOST(), fetchGET(), requestUri());
 
 echo (
