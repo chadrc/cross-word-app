@@ -6,7 +6,11 @@ class CrossWordGame extends React.Component {
   render() {
     return (
       <section>
-        CrossWordGame
+        <h1>Solve</h1>
+        <section className="cross-word">
+        </section>
+        <section className="word-hints">
+        </section>
       </section>
     );
   }

@@ -14,6 +14,7 @@ class :puzzle-page extends :base-page {
     $cross_word = DB()->getCrossWord($puzzle_id);
 
     if ($cross_word !== null) {
+      $grid = $cross_word->get_grid();
       $horz_words = Vector {};
       $vert_words = Vector {};
       foreach ($cross_word->get_words() as $word) {
@@ -24,51 +25,10 @@ class :puzzle-page extends :base-page {
         }
       }
 
-      $horz_list = <ul><li>Horizontal</li></ul>;
-      $vert_list = <ul><li>Vertical</li></ul>;
-
-      $num = 1;
-      foreach ($horz_words as $word) {
-        $horz_list->appendChild(
-          <li>{$num}. {$word->get_word()}</li>
-        );
-        $num += 2;
-      }
-
-      $num = 2;
-      foreach ($vert_words as $word) {
-        $vert_list->appendChild(
-          <li>{$num}. {$word->get_word()}</li>
-        );
-        $num += 2;
-      }
-
-      $grid = $cross_word->get_grid();
-      $limits = $grid->get_limits();
-      $table = <table></table>;
-      for ($x=$limits->max_y(); $x>=$limits->min_y(); $x--) {
-        $table_row = <tr></tr>;
-        for ($y=$limits->min_x(); $y<=$limits->max_x(); $y++) {
-          $cell = $grid->get_cell($y, $x);
-          $table_row->appendChild(
-            <td class={$cell === null ? "empty" : ""}></td>
-          );
-        }
-        $table->appendChild($table_row);
-      }
-
       return (
         <content title="Puzzle" components={Vector {"CrossWordGame"}}>
-          <h1>Solve</h1>
-          <section class="cross-word">
-            {$table}
-          </section>
-          <section class="word-hints">
-            {$horz_list}
-            {$vert_list}
-          </section>
           <x:js-scope>
-            <cross-word-game />
+            <cross-word-game horizontal={$horz_words} vertical={$vert_words} grid={$grid} />
           </x:js-scope>
         </content>
       );

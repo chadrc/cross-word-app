@@ -33,7 +33,7 @@ main {
   margin: auto;
 }
 
-main>h1:first-of-type {
+main h1:first-of-type {
   margin-top: .5em;
   text-align: center;
   font-size: 3em;
