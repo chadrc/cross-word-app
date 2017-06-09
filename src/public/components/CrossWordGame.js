@@ -3,6 +3,16 @@ class CrossWordGame extends React.Component {
     super(props);
   }
 
+  wordIndex(i, orientation) {
+    if (!orientation) {
+      return NaN;
+    }
+    if (orientation !== "Horizontal" && orientation !== "Vertical") {
+      throw Error("Invalid orientation:" + orientation);
+    }
+    return orientation === "Horizontal" ? i * 2 + 1 : i * 2 + 2;
+  }
+
   render() {
     let rows = []
     for (let y=this.props.limits.maxY; y>=this.props.limits.minY; y--) {
@@ -10,7 +20,11 @@ class CrossWordGame extends React.Component {
       for (let x=this.props.limits.minX; x<=this.props.limits.maxX; x++) {
         let cell = this.props.grid[y][x];
         cells.push(
-          <td key={`${x},${y}`} className={cell ? "" : "empty"}></td>
+          <td key={`${x},${y}`} className={cell ? "" : "empty"}>
+            {cell && cell.orientation ?
+              <sup>{this.wordIndex(cell.wordIndex, cell.orientation)}</sup>
+            : ""}
+          </td>
         );
       }
       rows.push(
@@ -32,7 +46,7 @@ class CrossWordGame extends React.Component {
             <li>Horizontal</li>
             {this.props.horizontal.map((item, index) => {
               return (
-                <li key={`horizontal${index}`}>{index * 2}. {item}</li>
+                <li key={`horizontal${index}`}>{this.wordIndex(index, "Horizontal")}. {item}</li>
               );
             })}
           </ul>
@@ -40,7 +54,7 @@ class CrossWordGame extends React.Component {
             <li>Vertical</li>
             {this.props.vertical.map((item, index) => {
               return (
-                <li key={`vertical${index}`}>{index * 2 + 1}. {item}</li>
+                <li key={`vertical${index}`}>{this.wordIndex(index, "Vertical")}. {item}</li>
               );
             })}
           </ul>
