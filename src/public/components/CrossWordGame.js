@@ -24,6 +24,7 @@ class CrossWordGame extends React.Component {
             {cell && cell.orientation ?
               <sup>{this.wordIndex(cell.wordIndex, cell.orientation)}</sup>
             : ""}
+            {cell ? <input type="text" maxLength="1" /> : ""}
           </td>
         );
       }
