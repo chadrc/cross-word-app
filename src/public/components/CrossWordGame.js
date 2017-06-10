@@ -30,9 +30,12 @@ class CrossWordGame extends React.Component {
       e.preventDefault();
       e.stopPropagation();
 
-      let east = {x: cur.x + 1, y: cur.y, cell: null};
+      let xOffset = e.shiftKey ? -1 : 1;
+      let yOffset = e.shiftKey ? 1 : -1;
+
+      let east = {x: cur.x + xOffset, y: cur.y, cell: null};
       east.cell = this.props.grid[east.y][east.x];
-      let south = {x: cur.x, y: cur.y - 1, cell: null};
+      let south = {x: cur.x, y: cur.y + yOffset, cell: null};
       south.cell = this.props.grid[south.y] ? this.props.grid[south.y][south.x] : null;
       let next = null;
       console.log('east:', east);
