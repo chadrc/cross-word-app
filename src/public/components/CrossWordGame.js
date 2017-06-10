@@ -80,8 +80,12 @@ class CrossWordGame extends React.Component {
 
   cellChanged(x, y, v) {
     this.state.answerGrid[y][x] = v;
+    if (this.state.answerAudits) {
+      this.state.answerAudits[y][x] = null;
+    }
     this.setState({
-      answerGrid: this.state.answerGrid
+      answerGrid: this.state.answerGrid,
+      answerAudits: this.state.answerAudits
     })
   }
 
@@ -138,7 +142,7 @@ class CrossWordGame extends React.Component {
     }
 
     if (stats) {
-      if (!stats.correct || !stats.missing) {
+      if (!stats.correct || stats.missing) {
         classes.push("incorrect");
       }
     }
