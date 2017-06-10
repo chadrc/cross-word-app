@@ -166,6 +166,13 @@ form button {
   margin: 0;
   border: none;
   outline: none;
+  color: transparent;
+  text-shadow: 0 0 0 #39403E;
+  transition: background-color .1s;
+}
+
+.cross-word table td>input:focus {
+  background-color: #D7F2FF;
 }
 
 .cross-word table td.empty {
