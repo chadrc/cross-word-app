@@ -3,7 +3,8 @@ class CrossWordGame extends React.Component {
     super(props);
     this.state = {
       forceFocus: null,
-      focused: null
+      focused: null,
+      overflow: ""
     }
   }
 
@@ -30,47 +31,67 @@ class CrossWordGame extends React.Component {
       e.preventDefault();
       e.stopPropagation();
 
-      let xOffset = e.shiftKey ? -1 : 1;
-      let yOffset = e.shiftKey ? 1 : -1;
-
-      let eastWest = {x: cur.x + xOffset, y: cur.y, cell: null};
-      eastWest.cell = this.props.grid[eastWest.y][eastWest.x];
-      let northSouth = {x: cur.x, y: cur.y + yOffset, cell: null};
-      northSouth.cell = this.props.grid[northSouth.y] ? this.props.grid[northSouth.y][northSouth.x] : null;
-      let next = null;
-      console.log('eastWest:', eastWest);
-      console.log('northSouth:', northSouth);
-      if (eastWest.cell && northSouth.cell) {
-        next = this.state.tabDirection === "east-west" ? eastWest : northSouth;
-      } else {
-        next = eastWest.cell ? eastWest : northSouth;
-      }
-
-      let dir = "";
-      if (next) {
-        if (next === eastWest) {
-          dir = "east-west";
-        } else {
-          dir = "north-south";
-        }
-      }
+      let nextCell = this.getNextCell(cur.x, cur.y, e.shiftKey ? -1 : 1, e.shiftKey ? 1 : -1)
 
       this.setState({
-        forceFocus: next,
-        tabDirection: dir
+        forceFocus: nextCell.next,
+        tabDirection: nextCell.direction
       });
     }
+  }
+
+  getNextCell(x, y, dirX, dirY) {
+    let eastWest = {x: x + dirX, y: y, cell: null};
+    eastWest.cell = this.props.grid[eastWest.y][eastWest.x];
+    let northSouth = {x: x, y: y + dirY, cell: null};
+    northSouth.cell = this.props.grid[northSouth.y] ? this.props.grid[northSouth.y][northSouth.x] : null;
+    let next = null;
+    console.log('eastWest:', eastWest);
+    console.log('northSouth:', northSouth);
+    if (eastWest.cell && northSouth.cell) {
+      next = this.state.tabDirection === "east-west" ? eastWest : northSouth;
+    } else {
+      next = eastWest.cell ? eastWest : northSouth;
+    }
+
+    let dir = "";
+    if (next) {
+      if (next === eastWest) {
+        dir = "east-west";
+      } else {
+        dir = "north-south";
+      }
+    }
+
+    return {
+      next: next,
+      direction: dir
+    }
+  }
+
+  cellOverflow(x, y, l) {
+    let nextCell = this.getNextCell(x, y, 1, -1);
+    this.setState({
+      forceFocus: nextCell.next,
+      overflow: l,
+      tabDirection: nextCell.direction
+    })
   }
 
   cellFocused(x, y) {
     this.setState({
       focused: {x: x, y: y},
-      forceFocus: null
+      forceFocus: null,
+      overflow: ""
     })
   }
 
   forceFocusCell(x, y) {
     return this.state.forceFocus && this.state.forceFocus.x === x && this.state.forceFocus.y === y;
+  }
+
+  overflowForCell(x, y) {
+    return this.forceFocusCell(x, y) ? this.state.overflow : "";
   }
 
   render() {
@@ -86,8 +107,10 @@ class CrossWordGame extends React.Component {
             : ""}
             {cell ?
               <CellInput  x={x} y={y}
+                          overflow={this.overflowForCell(x, y)}
                           forceFocus={this.forceFocusCell(x, y)}
                           onFocus={() => this.cellFocused(x, y)}
+                          onOverflow={(l) => this.cellOverflow(x, y, l)}
               />
             : ""}
           </td>
@@ -140,6 +163,14 @@ class CellInput extends React.Component {
     }
   }
 
+  componentWillReceiveProps(newProps) {
+    if (newProps.overflow) {
+      this.setState({
+        letter: newProps.overflow
+      });
+    }
+  }
+
   raiseOnChange(value) {
     console.log(`Change: (${this.props.x}, ${this.props.y})`);
 
@@ -164,8 +195,6 @@ class CellInput extends React.Component {
 
   raiseOnFocus() {
     console.log(`Focus: (${this.props.x}, ${this.props.y})`);
-
-    this.input.select();
 
     if (this.props.onFocus) {
       this.props.onFocus();
