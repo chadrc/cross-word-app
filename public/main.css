@@ -164,10 +164,11 @@ form button {
   text-align: center;
   padding: 0;
   margin: 0;
-  border: 2px solid white;
+  border: 2px solid transparent;
   outline: none;
   color: transparent;
   text-shadow: 0 0 0 #39403E;
+  background-color: transparent;
   transition: background-color .1s;
 }
 
@@ -180,6 +181,10 @@ form button {
 
 .cross-word table td.empty {
   background-color: #39403E;
+}
+
+.cross-word table td.incorrect {
+  background-color: #FFCDC1;
 }
 
 .word-hints {

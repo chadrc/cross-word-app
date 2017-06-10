@@ -122,7 +122,28 @@ class CrossWordGame extends React.Component {
       return response.json();
     }).then((obj) => {
       console.log("response:", obj);
+      this.setState({
+        solved: obj.solved,
+        answerAudits: obj.answers
+      })
     });
+  }
+
+  cellClass(x, y) {
+    let cell = this.props.grid[y][x];
+    let stats = this.cellStats(x, y);
+    let classes = [];
+    if (!cell) {
+      classes.push("empty");
+    }
+
+    if (stats) {
+      if (!stats.correct || !stats.missing) {
+        classes.push("incorrect");
+      }
+    }
+
+    return classes.join(" ");
   }
 
   render() {
@@ -132,13 +153,14 @@ class CrossWordGame extends React.Component {
       for (let x=this.props.limits.minX; x<=this.props.limits.maxX; x++) {
         let cell = this.props.grid[y][x];
         cells.push(
-          <td key={`${x},${y}`} className={cell ? "" : "empty"}>
+          <td key={`${x},${y}`} className={this.cellClass(x, y)}>
             {cell && cell.orientation ?
               <sup>{this.wordIndex(cell.wordIndex, cell.orientation)}</sup>
             : ""}
             {cell ?
               <CellInput  x={x} y={y}
                           overflow={this.overflowForCell(x, y)}
+                          stats={this.cellStats(x, y)}
                           forceFocus={this.forceFocusCell(x, y)}
                           onFocus={() => this.cellFocused(x, y)}
                           onOverflow={(l) => this.cellOverflow(x, y, l)}
