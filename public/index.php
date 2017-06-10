@@ -8,21 +8,27 @@ require_once("../src/elements/pages/index-page.hh");
 require_once("../src/elements/pages/puzzle-page.hh");
 require_once("../src/elements/pages/create-page.hh");
 require_once("../src/elements/pages/puzzles-page.hh");
+require_once("../src/elements/pages/puzzle-solve.hh");
+
 DB()->recordRequest(fetchPOST(), fetchGET(), requestUri());
 
-echo (
-  <router>
-    <route match="/">
-      <index-page />
-    </route>
-    <route match="/create">
-      <create-page />
-    </route>
-    <route match="/puzzle/[a-z 0-9]{24}">
-      <puzzle-page />
-    </route>
-    <route match="/puzzles">
-      <puzzles-page />
-    </route>
-  </router>
-);
+if (requestUri() === "/puzzle/solve") {
+  echo PuzzleSolve();
+} else {
+  echo (
+    <router>
+      <route match="/">
+        <index-page />
+      </route>
+      <route match="/create">
+        <create-page />
+      </route>
+      <route match="/puzzle/[a-z 0-9]{24}">
+        <puzzle-page />
+      </route>
+      <route match="/puzzles">
+        <puzzles-page />
+      </route>
+    </router>
+  );
+}

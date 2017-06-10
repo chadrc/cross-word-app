@@ -1,10 +1,15 @@
 class CrossWordGame extends React.Component {
   constructor(props) {
     super(props);
+    let answerGrid = {};
+    for (let y=props.limits.minY; y <= props.limits.maxY; y++) {
+      answerGrid[y] = {};
+    }
     this.state = {
       forceFocus: null,
       focused: null,
-      overflow: ""
+      overflow: "",
+      answerGrid: answerGrid
     }
   }
 
@@ -73,6 +78,14 @@ class CrossWordGame extends React.Component {
     })
   }
 
+  cellChanged(x, y, v) {
+    console.log("cell changed:", x, y, v);
+    this.state.answerGrid[y][x] = v;
+    this.setState({
+      answerGrid: this.state.answerGrid
+    })
+  }
+
   cellFocused(x, y) {
     this.setState({
       focused: {x: x, y: y},
@@ -87,6 +100,17 @@ class CrossWordGame extends React.Component {
 
   overflowForCell(x, y) {
     return this.forceFocusCell(x, y) ? this.state.overflow : "";
+  }
+
+  submit(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("submitting:", e);
+    fetch("/puzzle/solve", {method: "POST"}).then((response) => {
+      return response.json();
+    }).then((obj) => {
+      console.log("response:", obj);
+    })
   }
 
   render() {
@@ -106,6 +130,7 @@ class CrossWordGame extends React.Component {
                           forceFocus={this.forceFocusCell(x, y)}
                           onFocus={() => this.cellFocused(x, y)}
                           onOverflow={(l) => this.cellOverflow(x, y, l)}
+                          onChange={(v) => this.cellChanged(x, y, v)}
               />
             : ""}
           </td>
@@ -118,31 +143,34 @@ class CrossWordGame extends React.Component {
     return (
       <section>
         <h1>Solve</h1>
-        <section className="cross-word">
-          <table onKeyDown={(e) => this.onKeyDown(e)}>
-            <tbody>
-              {rows}
-            </tbody>
-          </table>
-        </section>
-        <section className="word-hints">
-          <ul>
-            <li>Horizontal</li>
-            {this.props.horizontal.map((item, index) => {
-              return (
-                <li key={`horizontal${index}`}>{this.wordIndex(index, "Horizontal")}. {item}</li>
-              );
-            })}
-          </ul>
-          <ul>
-            <li>Vertical</li>
-            {this.props.vertical.map((item, index) => {
-              return (
-                <li key={`vertical${index}`}>{this.wordIndex(index, "Vertical")}. {item}</li>
-              );
-            })}
-          </ul>
-        </section>
+        <form onSubmit={(e) => this.submit(e)}>
+          <section className="cross-word">
+              <table onKeyDown={(e) => this.onKeyDown(e)}>
+                <tbody>
+                  {rows}
+                </tbody>
+              </table>
+          </section>
+          <section className="word-hints">
+            <ul>
+              <li>Horizontal</li>
+              {this.props.horizontal.map((item, index) => {
+                return (
+                  <li key={`horizontal${index}`}>{this.wordIndex(index, "Horizontal")}. {item}</li>
+                );
+              })}
+            </ul>
+            <ul>
+              <li>Vertical</li>
+              {this.props.vertical.map((item, index) => {
+                return (
+                  <li key={`vertical${index}`}>{this.wordIndex(index, "Vertical")}. {item}</li>
+                );
+              })}
+            </ul>
+          </section>
+          <button type="submit">Submit</button>
+        </form>
       </section>
     );
   }
@@ -162,6 +190,10 @@ class CellInput extends React.Component {
     if (newProps.overflow) {
       this.setState({
         letter: newProps.overflow
+      }, () => {
+        if (this.props.onChange) {
+          this.props.onChange(newProps.overflow);
+        }
       });
     }
   }
