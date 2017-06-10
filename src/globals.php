@@ -43,3 +43,7 @@ function requestUri() {
   $uri = $_SERVER['REQUEST_URI'];
   return (string) $uri;
 }
+
+function fetchPOSTBody() {
+  return file_get_contents('php://input');
+}

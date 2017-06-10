@@ -31,6 +31,16 @@ class CrossWordGrid implements Printable {
     return null;
   }
 
+  public function get_cells(): Vector<CrossWordCell> {
+    $cells = Vector {};
+    foreach ($this->grid as $key => $value) {
+      foreach ($value as $key => $value) {
+        $cells[] = $value;
+      }
+    }
+    return $cells;
+  }
+
   public function clear_cell(int $x, int $y) {
     if ($this->grid->containsKey($y) && $this->grid[$y]->containsKey($x)) {
       $this->grid[$y]->removeKey($x);

@@ -79,7 +79,6 @@ class CrossWordGame extends React.Component {
   }
 
   cellChanged(x, y, v) {
-    console.log("cell changed:", x, y, v);
     this.state.answerGrid[y][x] = v;
     this.setState({
       answerGrid: this.state.answerGrid
