@@ -28,7 +28,11 @@ class :puzzle-page extends :base-page {
       return (
         <content title="Puzzle" components={Vector {"CrossWordGame"}}>
           <x:js-scope>
-            <cross-word-game horizontal={$horz_words} vertical={$vert_words} grid={$grid} />
+            <cross-word-game
+              horizontal={$horz_words}
+              vertical={$vert_words}
+              grid={$grid}
+              puzzleId={$cross_word->get_id()}/>
           </x:js-scope>
         </content>
       );

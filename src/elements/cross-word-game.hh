@@ -5,6 +5,7 @@ class :cross-word-game extends :x:element {
   use XHPReact;
 
   attribute :xhp:html-element;
+  attribute string puzzleId @required;
   attribute Vector<CrossWordString> horizontal @required;
   attribute Vector<CrossWordString> vertical @required;
   attribute CrossWordGrid grid @required;
@@ -39,6 +40,7 @@ class :cross-word-game extends :x:element {
     $this->constructReactInstance(
       'CrossWordGame',
       Map {
+        'puzzleId' => $this->:puzzleId,
         'horizontal' => $horz_hints,
         'vertical' => $vert_hints,
         'grid' => $blank_grid,

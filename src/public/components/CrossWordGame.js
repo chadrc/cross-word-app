@@ -106,11 +106,20 @@ class CrossWordGame extends React.Component {
     e.preventDefault();
     e.stopPropagation();
     console.log("submitting:", e);
-    fetch("/puzzle/solve", {method: "POST"}).then((response) => {
+    fetch("/puzzle/solve", {
+      method: "POST",
+      body: JSON.stringify({
+        puzzleId: this.props.puzzleId,
+        answers: this.state.answerGrid
+      }),
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      })
+    }).then((response) => {
       return response.json();
     }).then((obj) => {
       console.log("response:", obj);
-    })
+    });
   }
 
   render() {
