@@ -182,7 +182,7 @@ class CrossWordGame extends React.Component {
                           onOverflow={(l) => this.cellOverflow(x, y, l)}
                           onChange={(v) => this.cellChanged(x, y, v)}
                           defaultValue={this.state.answerGrid[y][x]}
-                          disabled={this.state.sovled}
+                          disabled={this.state.solved}
               />
             : ""}
           </td>
@@ -195,7 +195,7 @@ class CrossWordGame extends React.Component {
     return (
       <section>
         <h1>Solve</h1>
-        <form onSubmit={(e) => this.submit(e)}>
+        <form onSubmit={(e) => this.submit(e)} className={this.state.solved ? "solved" : ""}>
           <section className="cross-word">
               <table onKeyDown={(e) => this.onKeyDown(e)}>
                 <tbody>
@@ -203,6 +203,11 @@ class CrossWordGame extends React.Component {
                 </tbody>
               </table>
           </section>
+          {this.state.solved ? (
+            <section className="puzzle-status">
+              <h2>Solved!</h2>
+            </section>
+          ) : ""}
           <section className="word-hints">
             <ul>
               <li>Horizontal</li>
@@ -223,11 +228,6 @@ class CrossWordGame extends React.Component {
           </section>
           <button type="submit">Submit</button>
         </form>
-        {this.state.solved ? (
-          <footer>
-            <h2>Solved!</h2>
-          </footer>
-        ) : ""}
       </section>
     );
   }

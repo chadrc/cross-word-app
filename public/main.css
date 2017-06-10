@@ -187,6 +187,12 @@ form button {
   background-color: #FFCDC1;
 }
 
+.puzzle-status {
+  margin: 1em 0;
+  width: 80%;
+  text-align: center;
+}
+
 .word-hints {
   display: flex;
   justify-content: space-between;
@@ -199,12 +205,21 @@ form button {
   list-style: none;
   text-align: left;
   padding: 0;
+  margin: 0;
 }
 
 .word-hints ul li:first-of-type {
   font-family: 'Roboto Slab', serif;
   font-size: 1.5em;
-  margin: .5em 0;
+  margin: 0 0 .5em 0;
+}
+
+form.solved .cross-word table td:not(.empty) {
+  background-color: #B7FFB4;
+}
+
+form.solved .puzzle-status {
+  background-color: #B7FFB4;
 }
 
 @keyframes border-blink {
