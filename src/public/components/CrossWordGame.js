@@ -13,6 +13,13 @@ class CrossWordGame extends React.Component {
     return orientation === "Horizontal" ? i * 2 + 1 : i * 2 + 2;
   }
 
+  onKeyPress(e) {
+    if (e.key === "Tab") {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }
+
   render() {
     let rows = []
     for (let y=this.props.limits.maxY; y>=this.props.limits.minY; y--) {
@@ -24,7 +31,7 @@ class CrossWordGame extends React.Component {
             {cell && cell.orientation ?
               <sup>{this.wordIndex(cell.wordIndex, cell.orientation)}</sup>
             : ""}
-            {cell ? <input type="text" maxLength="1" /> : ""}
+            {cell ? <CellInput x={x} y={y} /> : ""}
           </td>
         );
       }
@@ -36,7 +43,7 @@ class CrossWordGame extends React.Component {
       <section>
         <h1>Solve</h1>
         <section className="cross-word">
-          <table>
+          <table onKeyPress={(e) => this.onKeyPress(e)}>
             <tbody>
               {rows}
             </tbody>
@@ -66,3 +73,65 @@ class CrossWordGame extends React.Component {
 }
 
 window.CrossWordGame = CrossWordGame;
+
+class CellInput extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      letter: ""
+    }
+  }
+
+  raiseOnChange(value) {
+    console.log(`Change: (${this.props.x}, ${this.props.y})`);
+
+    let letter = value.substr(0, 1);
+    let overflow = value.substr(1);
+
+    console.log(`letter: ${letter}`);
+    console.log(`overflow: ${overflow}`);
+
+    if (letter !== this.state.letter) {
+      this.setState({
+        letter: letter
+      }, () => {
+        if (this.props.onChange) {
+          this.props.onChange(value);
+        }
+      });
+    } else if (overflow && this.props.onOverflow) {
+      this.props.onOverflow(overflow);
+    }
+  }
+
+  raiseOnFocus() {
+    console.log(`Focus: (${this.props.x}, ${this.props.y})`);
+
+    this.input.select();
+
+    if (this.props.onFocus) {
+      this.props.onFocus();
+    }
+  }
+
+  raiseOnBlur() {
+    console.log(`Blur: (${this.props.x}, ${this.props.y})`)
+
+    if (this.props.onBlur) {
+      this.props.onBlur();
+    }
+  }
+
+  render() {
+    return (
+      <input  type="text"
+              tabIndex={-1}
+              ref={(input) => this.input = input}
+              value={this.state.letter}
+              onFocus={(e) => this.raiseOnFocus()}
+              onBlur={(e) => this.raiseOnBlur()}
+              onChange={(e) => this.raiseOnChange(e.target.value)}
+      />
+    );
+  }
+}
