@@ -1,6 +1,10 @@
 class CrossWordGame extends React.Component {
   constructor(props) {
     super(props);
+    this.state = this.defaultState;
+  }
+
+  get defaultState() {
     let answerGrid = {};
     let solved = false;
     if (localStorage[this.props.puzzleId]) {
@@ -8,7 +12,7 @@ class CrossWordGame extends React.Component {
       answerGrid = store.answers;
       solved = store.solved === true;
     } else {
-      for (let y=props.limits.minY; y <= props.limits.maxY; y++) {
+      for (let y=this.props.limits.minY; y <= this.props.limits.maxY; y++) {
         answerGrid[y] = {};
       }
       localStorage[this.props.puzzleId] = JSON.stringify({
@@ -16,12 +20,13 @@ class CrossWordGame extends React.Component {
         solved: false
       });
     }
-    this.state = {
+    return {
       forceFocus: null,
       focused: null,
       overflow: "",
       answerGrid: answerGrid,
-      solved: solved
+      solved: solved,
+      answerAudits: null
     }
   }
 
@@ -92,9 +97,10 @@ class CrossWordGame extends React.Component {
     let nextCell = this.getNextCell(x, y, 1, -1);
     this.setState({
       forceFocus: nextCell.next,
-      overflow: l,
       tabDirection: nextCell.direction
-    })
+    });
+
+    this.cellChanged(nextCell.next.x, nextCell.next.y, l);
   }
 
   cellChanged(x, y, v) {
@@ -122,38 +128,8 @@ class CrossWordGame extends React.Component {
     return this.state.forceFocus && this.state.forceFocus.x === x && this.state.forceFocus.y === y;
   }
 
-  overflowForCell(x, y) {
-    return this.forceFocusCell(x, y) ? this.state.overflow : "";
-  }
-
   cellStats(x, y) {
     return this.state.answerAudits ? this.state.answerAudits[y][x] : null;
-  }
-
-  submit(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    console.log("submitting:", e);
-    fetch("/puzzle/solve", {
-      method: "POST",
-      body: JSON.stringify({
-        puzzleId: this.props.puzzleId,
-        answers: this.state.answerGrid
-      }),
-      headers: new Headers({
-        'Content-Type': 'application/json'
-      })
-    }).then((response) => {
-      return response.json();
-    }).then((obj) => {
-      console.log("response:", obj);
-      this.setState({
-        solved: obj.solved,
-        answerAudits: obj.answers
-      }, () => {
-        this.storeState();
-      });
-    });
   }
 
   cellClass(x, y) {
@@ -173,6 +149,39 @@ class CrossWordGame extends React.Component {
     return classes.join(" ");
   }
 
+  reset(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("reset");
+    localStorage[this.props.puzzleId] = "";
+    this.setState(this.defaultState)
+  }
+
+  submit(e) {
+    console.log("solve");
+    e.preventDefault();
+    e.stopPropagation();
+    fetch("/puzzle/solve", {
+      method: "POST",
+      body: JSON.stringify({
+        puzzleId: this.props.puzzleId,
+        answers: this.state.answerGrid
+      }),
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      })
+    }).then((response) => {
+      return response.json();
+    }).then((obj) => {
+      this.setState({
+        solved: obj.solved,
+        answerAudits: obj.answers
+      }, () => {
+        this.storeState();
+      });
+    });
+  }
+
   render() {
     let rows = []
     for (let y=this.props.limits.maxY; y>=this.props.limits.minY; y--) {
@@ -186,13 +195,12 @@ class CrossWordGame extends React.Component {
             : ""}
             {cell ?
               <CellInput  x={x} y={y}
-                          overflow={this.overflowForCell(x, y)}
                           stats={this.cellStats(x, y)}
                           forceFocus={this.forceFocusCell(x, y)}
                           onFocus={() => this.cellFocused(x, y)}
                           onOverflow={(l) => this.cellOverflow(x, y, l)}
                           onChange={(v) => this.cellChanged(x, y, v)}
-                          defaultValue={this.state.answerGrid[y][x]}
+                          value={this.state.answerGrid[y][x] || ""}
                           disabled={this.state.solved}
               />
             : ""}
@@ -237,7 +245,11 @@ class CrossWordGame extends React.Component {
               })}
             </ul>
           </section>
-          <button type="submit">Submit</button>
+          {this.state.solved ? (
+            <button type="button" onClick={(e) => this.reset(e)}>Reset</button>
+          ) : (
+            <button type="submit">Submit</button>
+          )}
         </form>
       </section>
     );
@@ -250,19 +262,6 @@ class CellInput extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      letter: this.props.defaultValue || ""
-    }
-  }
-
-  componentWillReceiveProps(newProps) {
-    if (newProps.overflow) {
-      this.setState({
-        letter: newProps.overflow
-      }, () => {
-        if (this.props.onChange) {
-          this.props.onChange(newProps.overflow);
-        }
-      });
     }
   }
 
@@ -270,14 +269,10 @@ class CellInput extends React.Component {
     let letter = value.substr(0, 1);
     let overflow = value.substr(1);
 
-    if (letter !== this.state.letter) {
-      this.setState({
-        letter: letter
-      }, () => {
-        if (this.props.onChange) {
-          this.props.onChange(value);
-        }
-      });
+    if (letter !== this.props.value) {
+      if (this.props.onChange) {
+        this.props.onChange(value);
+      }
     } else if (overflow && this.props.onOverflow) {
       this.props.onOverflow(overflow);
     }
@@ -300,7 +295,7 @@ class CellInput extends React.Component {
       <input  type="text"
               tabIndex={-1}
               ref={(input) => this.input = input}
-              value={this.state.letter}
+              value={this.props.value}
               onClick={(e) => this.input.select()}
               onFocus={(e) => this.raiseOnFocus()}
               onBlur={(e) => this.raiseOnBlur()}
