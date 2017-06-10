@@ -40,7 +40,7 @@ class CrossWordGame extends React.Component {
       if (east.cell && south.cell) {
 
       } else {
-        next = east || south;
+        next = east.cell ? east : south;
       }
       this.setState({
         forceFocus: next
