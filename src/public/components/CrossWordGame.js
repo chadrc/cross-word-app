@@ -19,11 +19,8 @@ class CrossWordGame extends React.Component {
   }
 
   onKeyDown(e) {
-    console.log("key press", e);
     if (e.key === "Tab") {
-      console.log("tab")
       let cur = this.state.focused;
-      console.log("cur", cur);
       if (!cur) {
         return;
       }
@@ -46,8 +43,6 @@ class CrossWordGame extends React.Component {
     let northSouth = {x: x, y: y + dirY, cell: null};
     northSouth.cell = this.props.grid[northSouth.y] ? this.props.grid[northSouth.y][northSouth.x] : null;
     let next = null;
-    console.log('eastWest:', eastWest);
-    console.log('northSouth:', northSouth);
     if (eastWest.cell && northSouth.cell) {
       next = this.state.tabDirection === "east-west" ? eastWest : northSouth;
     } else {
@@ -172,13 +167,8 @@ class CellInput extends React.Component {
   }
 
   raiseOnChange(value) {
-    console.log(`Change: (${this.props.x}, ${this.props.y})`);
-
     let letter = value.substr(0, 1);
     let overflow = value.substr(1);
-
-    console.log(`letter: ${letter}`);
-    console.log(`overflow: ${overflow}`);
 
     if (letter !== this.state.letter) {
       this.setState({
@@ -194,16 +184,12 @@ class CellInput extends React.Component {
   }
 
   raiseOnFocus() {
-    console.log(`Focus: (${this.props.x}, ${this.props.y})`);
-
     if (this.props.onFocus) {
       this.props.onFocus();
     }
   }
 
   raiseOnBlur() {
-    console.log(`Blur: (${this.props.x}, ${this.props.y})`)
-
     if (this.props.onBlur) {
       this.props.onBlur();
     }
@@ -225,7 +211,6 @@ class CellInput extends React.Component {
 
   componentDidUpdate() {
     if (this.props.forceFocus) {
-      console.log("did update force focus");
       this.input.focus();
     }
   }
