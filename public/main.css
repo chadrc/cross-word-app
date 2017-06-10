@@ -164,7 +164,7 @@ form button {
   text-align: center;
   padding: 0;
   margin: 0;
-  border: none;
+  border: 2px solid white;
   outline: none;
   color: transparent;
   text-shadow: 0 0 0 #39403E;
@@ -173,6 +173,9 @@ form button {
 
 .cross-word table td>input:focus {
   background-color: #D7F2FF;
+  animation-name: border-blink;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
 }
 
 .cross-word table td.empty {
@@ -197,4 +200,10 @@ form button {
   font-family: 'Roboto Slab', serif;
   font-size: 1.5em;
   margin: .5em 0;
+}
+
+@keyframes border-blink {
+  0% {border-color: #D7F2FF}
+  50% {border-color: #39403E}
+  100% {border-color: #D7F2FF}
 }
