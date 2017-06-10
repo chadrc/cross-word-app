@@ -44,6 +44,7 @@ function PuzzleSolve() {
 
     if (!$answers->containsKey($y) || !$answers[$y]->containsKey($x)) {
       $audits[$y][$x] = new CellAudit(true, false);
+      $allCorrect = false;
       continue;
     }
 

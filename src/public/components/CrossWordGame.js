@@ -101,6 +101,10 @@ class CrossWordGame extends React.Component {
     return this.forceFocusCell(x, y) ? this.state.overflow : "";
   }
 
+  cellStats(x, y) {
+    return this.state.answerAudits ? this.state.answerAudits[y][x] : null;
+  }
+
   submit(e) {
     e.preventDefault();
     e.stopPropagation();
