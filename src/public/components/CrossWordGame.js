@@ -48,18 +48,13 @@ class CrossWordGame extends React.Component {
   }
 
   onKeyDown(e) {
-    console.log(e.key);
+    let cur = this.state.focused;
     switch (e.key) {
       case "Tab":
-        let cur = this.state.focused;
-        if (!cur) {
-          return;
-        }
-
         e.preventDefault();
         e.stopPropagation();
 
-        let nextCell = this.getNextCell(cur.x, cur.y, e.shiftKey ? -1 : 1, e.shiftKey ? 1 : -1)
+        let nextCell = this.getNextCell(cur.x, cur.y, e.shiftKey ? -1 : 1, e.shiftKey ? 1 : -1);
 
         this.setState({
           forceFocus: nextCell.next,
@@ -84,7 +79,21 @@ class CrossWordGame extends React.Component {
 
       case "Backspace":
       case "Delete":
+        let value = this.state.answerGrid[cur.y][cur.x];
+        if (!value) {
+          e.preventDefault();
+          e.stopPropagation();
 
+          let nextCell = this.getNextCell(cur.x, cur.y, -1, 1);
+          this.setState({
+            forceFocus: nextCell.next,
+            tabDirection: nextCell.direction
+          });
+
+          if (nextCell.next) {
+            this.cellChanged(nextCell.next.x, nextCell.next.y, "");
+          }
+        }
         break;
     }
   }
