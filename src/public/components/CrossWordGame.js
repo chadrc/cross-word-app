@@ -152,13 +152,11 @@ class CrossWordGame extends React.Component {
   reset(e) {
     e.preventDefault();
     e.stopPropagation();
-    console.log("reset");
     localStorage[this.props.puzzleId] = "";
     this.setState(this.defaultState)
   }
 
   submit(e) {
-    console.log("solve");
     e.preventDefault();
     e.stopPropagation();
     fetch("/puzzle/solve", {
