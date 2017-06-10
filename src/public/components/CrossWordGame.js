@@ -2,8 +2,16 @@ class CrossWordGame extends React.Component {
   constructor(props) {
     super(props);
     let answerGrid = {};
-    for (let y=props.limits.minY; y <= props.limits.maxY; y++) {
-      answerGrid[y] = {};
+    if (localStorage[this.props.puzzleId]) {
+      let store = JSON.parse(localStorage[this.props.puzzleId]);
+      answerGrid = store.answers;
+    } else {
+      for (let y=props.limits.minY; y <= props.limits.maxY; y++) {
+        answerGrid[y] = {};
+      }
+      localStorage[this.props.puzzleId] = JSON.stringify({
+        answers: answerGrid
+      });
     }
     this.state = {
       forceFocus: null,
@@ -86,7 +94,11 @@ class CrossWordGame extends React.Component {
     this.setState({
       answerGrid: this.state.answerGrid,
       answerAudits: this.state.answerAudits
-    })
+    }, () => {
+      localStorage[this.props.puzzleId] = JSON.stringify({
+        answers: this.state.answerGrid
+      });
+    });
   }
 
   cellFocused(x, y) {
@@ -169,6 +181,8 @@ class CrossWordGame extends React.Component {
                           onFocus={() => this.cellFocused(x, y)}
                           onOverflow={(l) => this.cellOverflow(x, y, l)}
                           onChange={(v) => this.cellChanged(x, y, v)}
+                          defaultValue={this.state.answerGrid[y][x]}
+                          disabled={this.state.sovled}
               />
             : ""}
           </td>
@@ -209,6 +223,11 @@ class CrossWordGame extends React.Component {
           </section>
           <button type="submit">Submit</button>
         </form>
+        {this.state.solved ? (
+          <footer>
+            <h2>Solved!</h2>
+          </footer>
+        ) : ""}
       </section>
     );
   }
@@ -220,7 +239,7 @@ class CellInput extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      letter: ""
+      letter: this.props.defaultValue || ""
     }
   }
 
@@ -275,6 +294,7 @@ class CellInput extends React.Component {
               onFocus={(e) => this.raiseOnFocus()}
               onBlur={(e) => this.raiseOnBlur()}
               onChange={(e) => this.raiseOnChange(e.target.value)}
+              disabled={this.props.disabled}
       />
     );
   }
