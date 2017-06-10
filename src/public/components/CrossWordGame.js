@@ -48,22 +48,90 @@ class CrossWordGame extends React.Component {
   }
 
   onKeyDown(e) {
-    if (e.key === "Tab") {
-      let cur = this.state.focused;
-      if (!cur) {
-        return;
-      }
+    console.log(e.key);
+    switch (e.key) {
+      case "Tab":
+        let cur = this.state.focused;
+        if (!cur) {
+          return;
+        }
 
-      e.preventDefault();
-      e.stopPropagation();
+        e.preventDefault();
+        e.stopPropagation();
 
-      let nextCell = this.getNextCell(cur.x, cur.y, e.shiftKey ? -1 : 1, e.shiftKey ? 1 : -1)
+        let nextCell = this.getNextCell(cur.x, cur.y, e.shiftKey ? -1 : 1, e.shiftKey ? 1 : -1)
 
-      this.setState({
-        forceFocus: nextCell.next,
-        tabDirection: nextCell.direction
-      });
+        this.setState({
+          forceFocus: nextCell.next,
+          tabDirection: nextCell.direction
+        });
+        break;
+      case "ArrowRight":
+        this.focusClosestInDirection(1, 0);
+        break;
+
+      case "ArrowLeft":
+        this.focusClosestInDirection(-1, 0);
+        break;
+
+      case "ArrowUp":
+        this.focusClosestInDirection(0, 1);
+        break;
+
+      case "ArrowDown":
+        this.focusClosestInDirection(0, -1);
+        break;
+
+      case "Backspace":
+      case "Delete":
+
+        break;
     }
+  }
+
+  focusClosestInDirection(dirX, dirY) {
+    let cur = this.state.focused;
+
+    let closest = null;
+    let curX = cur.x;
+    let curY = cur.y;
+    let direction = "";
+    if (dirX !== 0) {
+      direction = "eastWest";
+      let row = this.props.grid[cur.y];
+      curX += dirX;
+      while (curX >= this.props.limits.minX && curX <= this.props.limits.maxX) {
+        closest = row[curX];
+        if (closest) {
+          break;
+        }
+        curX += dirX;
+      }
+    } else if (dirY !== 0) {
+      direction = "northSouth";
+      curY += dirY;
+      while (curY >= this.props.limits.minY && curY <= this.props.limits.maxY) {
+        let row = this.props.grid[curY];
+        closest = row[cur.x];
+        if (closest) {
+          break;
+        }
+        curY += dirY;
+      }
+    }
+
+    if (!closest) {
+      return null;
+    }
+
+    this.setState({
+      tabDirection: direction,
+      forceFocus: {
+        x: curX,
+        y: curY,
+        cell: closest
+      }
+    });
   }
 
   getNextCell(x, y, dirX, dirY) {
