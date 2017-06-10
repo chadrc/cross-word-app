@@ -215,6 +215,7 @@ class CellInput extends React.Component {
               tabIndex={-1}
               ref={(input) => this.input = input}
               value={this.state.letter}
+              onClick={(e) => this.input.select()}
               onFocus={(e) => this.raiseOnFocus()}
               onBlur={(e) => this.raiseOnBlur()}
               onChange={(e) => this.raiseOnChange(e.target.value)}
