@@ -30,7 +30,11 @@ main {
   align-items: center;
   flex-direction: column;
   width: 80%;
+  padding: 5%;
+  box-sizing: border-box;
   margin: auto;
+  background-color: rgba(255, 255, 255, .25);
+  border: 10px solid white;
 }
 
 main h1:first-of-type {
@@ -128,7 +132,6 @@ form button {
 }
 
 .cross-word {
-  width: 100%;
   display: flex;
   justify-content: center;
   background-color: #39403E;
@@ -195,10 +198,9 @@ form button {
 
 .word-hints {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   box-sizing: border-box;
   width: 100%;
-  padding: 0 25%;
   margin: 1em 0;
 }
 
