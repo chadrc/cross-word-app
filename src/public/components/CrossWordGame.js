@@ -26,7 +26,7 @@ class CrossWordGame extends React.Component {
       if (!cur) {
         return;
       }
-      
+
       e.preventDefault();
       e.stopPropagation();
 
@@ -126,13 +126,6 @@ class CellInput extends React.Component {
     }
   }
 
-  componentDidUpdate() {
-    if (this.props.forceFocus) {
-      console.log("did update force focus");
-      this.input.focus();
-    }
-  }
-
   raiseOnChange(value) {
     console.log(`Change: (${this.props.x}, ${this.props.y})`);
 
@@ -184,5 +177,12 @@ class CellInput extends React.Component {
               onChange={(e) => this.raiseOnChange(e.target.value)}
       />
     );
+  }
+
+  componentDidUpdate() {
+    if (this.props.forceFocus) {
+      console.log("did update force focus");
+      this.input.focus();
+    }
   }
 }
