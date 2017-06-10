@@ -1,6 +1,10 @@
 class CrossWordGame extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      forceFocus: null,
+      focused: null
+    }
   }
 
   wordIndex(i, orientation) {
@@ -13,11 +17,46 @@ class CrossWordGame extends React.Component {
     return orientation === "Horizontal" ? i * 2 + 1 : i * 2 + 2;
   }
 
-  onKeyPress(e) {
+  onKeyDown(e) {
+    console.log("key press", e);
     if (e.key === "Tab") {
+      console.log("tab")
+      let cur = this.state.focused;
+      console.log("cur", cur);
+      if (!cur) {
+        return;
+      }
+      
       e.preventDefault();
       e.stopPropagation();
+
+      let east = {x: cur.x + 1, y: cur.y, cell: null};
+      east.cell = this.props.grid[east.y][east.x];
+      let south = {x: cur.x, y: cur.y - 1, cell: null};
+      south.cell = this.props.grid[south.y] ? this.props.grid[south.y][south.x] : null;
+      let next = null;
+      console.log('east:', east);
+      console.log('south:', south);
+      if (east.cell && south.cell) {
+
+      } else {
+        next = east || south;
+      }
+      this.setState({
+        forceFocus: next
+      });
     }
+  }
+
+  cellFocused(x, y) {
+    this.setState({
+      focused: {x: x, y: y},
+      forceFocus: null
+    })
+  }
+
+  forceFocusCell(x, y) {
+    return this.state.forceFocus && this.state.forceFocus.x === x && this.state.forceFocus.y === y;
   }
 
   render() {
@@ -31,7 +70,12 @@ class CrossWordGame extends React.Component {
             {cell && cell.orientation ?
               <sup>{this.wordIndex(cell.wordIndex, cell.orientation)}</sup>
             : ""}
-            {cell ? <CellInput x={x} y={y} /> : ""}
+            {cell ?
+              <CellInput  x={x} y={y}
+                          forceFocus={this.forceFocusCell(x, y)}
+                          onFocus={() => this.cellFocused(x, y)}
+              />
+            : ""}
           </td>
         );
       }
@@ -43,7 +87,7 @@ class CrossWordGame extends React.Component {
       <section>
         <h1>Solve</h1>
         <section className="cross-word">
-          <table onKeyPress={(e) => this.onKeyPress(e)}>
+          <table onKeyDown={(e) => this.onKeyDown(e)}>
             <tbody>
               {rows}
             </tbody>
@@ -79,6 +123,13 @@ class CellInput extends React.Component {
     super(props);
     this.state = {
       letter: ""
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.props.forceFocus) {
+      console.log("did update force focus");
+      this.input.focus();
     }
   }
 
