@@ -2,23 +2,34 @@ class CrossWordGame extends React.Component {
   constructor(props) {
     super(props);
     let answerGrid = {};
+    let solved = false;
     if (localStorage[this.props.puzzleId]) {
       let store = JSON.parse(localStorage[this.props.puzzleId]);
       answerGrid = store.answers;
+      solved = store.solved === true;
     } else {
       for (let y=props.limits.minY; y <= props.limits.maxY; y++) {
         answerGrid[y] = {};
       }
       localStorage[this.props.puzzleId] = JSON.stringify({
-        answers: answerGrid
+        answers: answerGrid,
+        solved: false
       });
     }
     this.state = {
       forceFocus: null,
       focused: null,
       overflow: "",
-      answerGrid: answerGrid
+      answerGrid: answerGrid,
+      solved: solved
     }
+  }
+
+  storeState() {
+    localStorage[this.props.puzzleId] = JSON.stringify({
+      answers: this.state.answerGrid,
+      solved: this.state.solved
+    });
   }
 
   wordIndex(i, orientation) {
@@ -95,9 +106,7 @@ class CrossWordGame extends React.Component {
       answerGrid: this.state.answerGrid,
       answerAudits: this.state.answerAudits
     }, () => {
-      localStorage[this.props.puzzleId] = JSON.stringify({
-        answers: this.state.answerGrid
-      });
+      this.storeState();
     });
   }
 
@@ -141,7 +150,9 @@ class CrossWordGame extends React.Component {
       this.setState({
         solved: obj.solved,
         answerAudits: obj.answers
-      })
+      }, () => {
+        this.storeState();
+      });
     });
   }
 

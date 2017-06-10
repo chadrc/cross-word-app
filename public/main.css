@@ -188,7 +188,7 @@ form button {
 }
 
 .puzzle-status {
-  margin: 1em 0;
+  margin: 1em 0 0 0;
   width: 80%;
   text-align: center;
 }
@@ -199,6 +199,7 @@ form button {
   box-sizing: border-box;
   width: 100%;
   padding: 0 25%;
+  margin: 1em 0;
 }
 
 .word-hints ul {
