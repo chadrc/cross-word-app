@@ -41,12 +41,23 @@ class CrossWordGame extends React.Component {
       console.log('east:', east);
       console.log('south:', south);
       if (east.cell && south.cell) {
-
+        next = this.state.tabDirection === "east-west" ? east : south;
       } else {
         next = east.cell ? east : south;
       }
+
+      let dir = "";
+      if (next) {
+        if (next === east) {
+          dir = "east-west";
+        } else {
+          dir = "north-south";
+        }
+      }
+
       this.setState({
-        forceFocus: next
+        forceFocus: next,
+        tabDirection: dir
       });
     }
   }
