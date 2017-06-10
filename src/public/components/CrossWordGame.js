@@ -33,25 +33,25 @@ class CrossWordGame extends React.Component {
       let xOffset = e.shiftKey ? -1 : 1;
       let yOffset = e.shiftKey ? 1 : -1;
 
-      let east = {x: cur.x + xOffset, y: cur.y, cell: null};
-      east.cell = this.props.grid[east.y][east.x];
-      let south = {x: cur.x, y: cur.y + yOffset, cell: null};
-      south.cell = this.props.grid[south.y] ? this.props.grid[south.y][south.x] : null;
+      let eastWest = {x: cur.x + xOffset, y: cur.y, cell: null};
+      eastWest.cell = this.props.grid[eastWest.y][eastWest.x];
+      let northSouth = {x: cur.x, y: cur.y + yOffset, cell: null};
+      northSouth.cell = this.props.grid[northSouth.y] ? this.props.grid[northSouth.y][northSouth.x] : null;
       let next = null;
-      console.log('east:', east);
-      console.log('south:', south);
-      if (east.cell && south.cell) {
-        next = this.state.tabDirection === "east-west" ? east : south;
+      console.log('eastWest:', eastWest);
+      console.log('northSouth:', northSouth);
+      if (eastWest.cell && northSouth.cell) {
+        next = this.state.tabDirection === "eastWest-west" ? eastWest : northSouth;
       } else {
-        next = east.cell ? east : south;
+        next = eastWest.cell ? eastWest : northSouth;
       }
 
       let dir = "";
       if (next) {
-        if (next === east) {
-          dir = "east-west";
+        if (next === eastWest) {
+          dir = "eastWest-west";
         } else {
-          dir = "north-south";
+          dir = "north-northSouth";
         }
       }
 
