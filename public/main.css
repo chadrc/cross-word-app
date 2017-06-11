@@ -104,27 +104,73 @@ table a {
 
 form {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
+  flex-direction: column;
+  justify-content: center;
   width: 100%;
 }
 
-form label,
-form textarea {
-  font-size: 1.25em;
-  width: 48%;
-  max-width: 48%;
-  margin-top: 1em;
-}
-
-form textarea {
-  min-height: 5em;
+form>section {
+  display: flex;
+  flex-direction: column;
 }
 
 form label {
+  font-size: 1.25em;
+  margin-top: 1em;
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
+}
+
+/*form div.input-bk {
+  padding: .5em;
+  background-color: rgba(215, 242, 255, .5);
+}*/
+
+form div.word-input {
+  display: flex;
+  justify-content: space-between;
+  margin-top: .5em;
+}
+
+form textarea {
+  resize: none;
+}
+
+form input,
+form textarea {
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.5em;
+  padding: .5em;
+  outline: none;
+  border: .5em solid rgba(215, 242, 255, 1);
+}
+
+form input:focus,
+form textarea:focus {
+  border-color: #C4E6E8;
+}
+
+form>section:first-of-type>input {
+  width: 100%;
+  text-align: center;
+}
+
+form div.word-input>input {
+  border-right-width: 0;
+}
+
+form div.word-input>textarea {
+}
+
+form div.word-input>input:focus {
+  border-right-width: .5em;
+}
+
+form div.word-input>input:focus + textarea {
+  border-left-width: 0;
 }
 
 form button {
