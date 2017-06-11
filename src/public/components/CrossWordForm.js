@@ -12,14 +12,14 @@ class CrossWordForm extends React.Component {
       <form>
         <section>
           <label htmlFor="title">Title</label>
-          <input tabIndex={0} type="text" id="title" />
+          <input tabIndex={1} type="text" id="title" />
         </section>
         <section>
           <label>Words</label>
           {this.state.words.map((item, index) => {
-            return <WordInput tabIndex={index * 2 + 1} />
+            return <WordInput tabIndex={index * 2 + 2} />
           })}
-          <WordInput tabIndex={this.state.words.length * 2 + 1} />
+          <WordInput tabIndex={this.state.words.length * 2 + 2} />
         </section>
       </form>
     );
