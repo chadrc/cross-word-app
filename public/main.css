@@ -177,6 +177,12 @@ form button {
   margin-top: 2em;
 }
 
+section.puzzle-created-prompt {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
 .cross-word {
   display: flex;
   justify-content: center;
@@ -245,6 +251,7 @@ form button {
 .word-hints {
   display: flex;
   justify-content: space-around;
+  flex-direction: row;
   box-sizing: border-box;
   width: 100%;
   margin: 1em 0;
