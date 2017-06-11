@@ -26,10 +26,11 @@ class CrossWordForm extends React.Component {
     });
   }
 
-  wordFocused(index) {
+  wordFocused(name) {
     console.log("word focus");
     this.setState({
-      forceFocusIndex: null
+      forceFocusIndex: null,
+      forceFocusName: name
     });
   }
 
@@ -44,7 +45,7 @@ class CrossWordForm extends React.Component {
           <label>Words</label>
           {this.state.words.map((item, index) => {
             return <WordInput key={index}
-                              onFocus={() => this.wordFocused(index)}
+                              onFocus={(name) => this.wordFocused(name)}
                               forceFocus={this.state.forceFocusIndex === index}
                               tabIndex={index * 2 + 2} />
           })}
@@ -67,7 +68,11 @@ class WordInput extends React.Component {
     console.log("did mount");
     if (this.props.forceFocus) {
       console.log("force focus");
-      this.wordInput.focus();
+      if (this.props.forceFocusName === "word") {
+        this.wordInput.focus();
+      } else if (this.props.forceFocusName === "hint") {
+        this.hintInput.focus();
+      }
     }
   }
 
@@ -79,9 +84,9 @@ class WordInput extends React.Component {
 
   }
 
-  raiseOnFocused() {
+  raiseOnFocused(name) {
     if (this.props.onFocus) {
-      this.props.onFocus();
+      this.props.onFocus(name);
     }
   }
 
@@ -91,11 +96,12 @@ class WordInput extends React.Component {
         <input  ref={(input) => this.wordInput = input}
                 tabIndex={this.props.tabIndex}
                 type="text"
-                onFocus={() => this.raiseOnFocused()}
+                onFocus={() => this.raiseOnFocused("word")}
                 onChange={(e) => this.raiseWordChanged(e.target.value)} />
         <textarea ref={(input) => this.hintInput = input}
                   tabIndex={this.props.tabIndex + 1}
                   rows={2} type="text"
+                  onFocus={() => this.raiseOnFocused("hint")}
                   onChange={(e) => this.raiseHintChanged(e.target.value)} />
       </div>
     );
