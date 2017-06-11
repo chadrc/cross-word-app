@@ -32,9 +32,27 @@ class CrossWordForm extends React.Component {
     });
   }
 
+  wordChanged(index, value) {
+    this.state.words[index].word = value;
+    this.setState({
+      words: this.state.words
+    });
+  }
+
+  hintChanged(index, value) {
+    this.state.words[index].hint = value;
+    this.setState({
+      words: this.state.words
+    });
+  }
+
+  submit(e) {
+
+  }
+
   render() {
     return (
-      <form>
+      <form onSubmit={(e) => this.submit(e)}>
         <section>
           <label htmlFor="title">Title</label>
           <input tabIndex={1} type="text" id="title" />
@@ -44,6 +62,8 @@ class CrossWordForm extends React.Component {
           {this.state.words.map((item, index) => {
             return <WordInput key={index}
                               onFocus={() => this.wordFocused()}
+                              onWordChange={(value) => this.wordChanged(index, value)}
+                              onHintChange={(value) => this.hintChanged(index, value)}
                               forceFocus={this.state.forceFocusIndex === index}
                               forceFocusName={this.state.forceFocusName}
                               tabIndex={index * 2 + 2} />
@@ -74,11 +94,15 @@ class WordInput extends React.Component {
   }
 
   raiseWordChanged(value) {
-
+    if (this.props.onWordChange) {
+      this.props.onWordChange(value);
+    }
   }
 
   raiseHintChanged(value) {
-
+    if (this.props.onHintChange) {
+      this.props.onHintChange(value);
+    }
   }
 
   raiseOnFocused(name) {
