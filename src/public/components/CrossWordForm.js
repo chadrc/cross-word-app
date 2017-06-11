@@ -18,19 +18,17 @@ class CrossWordForm extends React.Component {
     return index;
   }
 
-  extraWordInputFocused() {
+  extraWordInputFocused(name) {
     let newWordIndex = this.addWord();
-    console.log("new word:", newWordIndex);
     this.setState({
-      forceFocusIndex: newWordIndex
+      forceFocusIndex: newWordIndex,
+      forceFocusName: name
     });
   }
 
-  wordFocused(name) {
-    console.log("word focus");
+  wordFocused() {
     this.setState({
-      forceFocusIndex: null,
-      forceFocusName: name
+      forceFocusIndex: null
     });
   }
 
@@ -45,11 +43,12 @@ class CrossWordForm extends React.Component {
           <label>Words</label>
           {this.state.words.map((item, index) => {
             return <WordInput key={index}
-                              onFocus={(name) => this.wordFocused(name)}
+                              onFocus={() => this.wordFocused()}
                               forceFocus={this.state.forceFocusIndex === index}
+                              forceFocusName={this.state.forceFocusName}
                               tabIndex={index * 2 + 2} />
           })}
-          <WordInput  onFocus={() => this.extraWordInputFocused()}
+          <WordInput  onFocus={(name) => this.extraWordInputFocused(name)}
                       tabIndex={this.state.words.length * 2 + 2} />
         </section>
       </form>
@@ -65,9 +64,7 @@ class WordInput extends React.Component {
   }
 
   componentDidMount() {
-    console.log("did mount");
     if (this.props.forceFocus) {
-      console.log("force focus");
       if (this.props.forceFocusName === "word") {
         this.wordInput.focus();
       } else if (this.props.forceFocusName === "hint") {
@@ -105,13 +102,5 @@ class WordInput extends React.Component {
                   onChange={(e) => this.raiseHintChanged(e.target.value)} />
       </div>
     );
-  }
-
-  componentDidUpdate() {
-    console.log("did update");
-    if (this.props.forceFocus) {
-      console.log("force focus");
-      this.word.focus();
-    }
   }
 }
