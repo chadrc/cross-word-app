@@ -3,8 +3,34 @@ class CrossWordForm extends React.Component {
     super(props);
     this.state = {
       title: "",
-      words: []
+      words: [],
+      forceFocusIndex: null
     };
+  }
+
+  addWord() {
+    this.state.words.push({
+      word: "",
+      hint: ""
+    });
+    let index = this.state.words.length - 1;
+    this.setState({words: this.state.words})
+    return index;
+  }
+
+  extraWordInputFocused() {
+    let newWordIndex = this.addWord();
+    console.log("new word:", newWordIndex);
+    this.setState({
+      forceFocusIndex: newWordIndex
+    });
+  }
+
+  wordFocused(index) {
+    console.log("word focus");
+    this.setState({
+      forceFocusIndex: null
+    });
   }
 
   render() {
@@ -17,9 +43,13 @@ class CrossWordForm extends React.Component {
         <section>
           <label>Words</label>
           {this.state.words.map((item, index) => {
-            return <WordInput tabIndex={index * 2 + 2} />
+            return <WordInput key={index}
+                              onFocus={() => this.wordFocused(index)}
+                              forceFocus={this.state.forceFocusIndex === index}
+                              tabIndex={index * 2 + 2} />
           })}
-          <WordInput tabIndex={this.state.words.length * 2 + 2} />
+          <WordInput  onFocus={() => this.extraWordInputFocused()}
+                      tabIndex={this.state.words.length * 2 + 2} />
         </section>
       </form>
     );
@@ -33,6 +63,14 @@ class WordInput extends React.Component {
     super(props);
   }
 
+  componentDidMount() {
+    console.log("did mount");
+    if (this.props.forceFocus) {
+      console.log("force focus");
+      this.wordInput.focus();
+    }
+  }
+
   raiseWordChanged(value) {
 
   }
@@ -41,12 +79,33 @@ class WordInput extends React.Component {
 
   }
 
+  raiseOnFocused() {
+    if (this.props.onFocus) {
+      this.props.onFocus();
+    }
+  }
+
   render() {
     return (
       <div className="word-input">
-        <input tabIndex={this.props.tabIndex} type="text" onChange={(e) => this.raiseWordChanged(e.target.value)} />
-        <textarea tabIndex={this.props.tabIndex + 1} rows={2} type="text" onChange={(e) => this.raiseHintChanged(e.target.value)} />
+        <input  ref={(input) => this.wordInput = input}
+                tabIndex={this.props.tabIndex}
+                type="text"
+                onFocus={() => this.raiseOnFocused()}
+                onChange={(e) => this.raiseWordChanged(e.target.value)} />
+        <textarea ref={(input) => this.hintInput = input}
+                  tabIndex={this.props.tabIndex + 1}
+                  rows={2} type="text"
+                  onChange={(e) => this.raiseHintChanged(e.target.value)} />
       </div>
     );
+  }
+
+  componentDidUpdate() {
+    console.log("did update");
+    if (this.props.forceFocus) {
+      console.log("force focus");
+      this.word.focus();
+    }
   }
 }
