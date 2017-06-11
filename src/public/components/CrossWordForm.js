@@ -47,7 +47,20 @@ class CrossWordForm extends React.Component {
   }
 
   submit(e) {
-
+    e.preventDefault();
+    e.stopPropagation();
+    fetch("/puzzle/make", {
+      method: "POST",
+      body: JSON.stringify({
+        title: this.state.title,
+        words: this.state.words,
+        redirect: "follow"
+      })
+    }).then((response) => {
+      return response.json()
+    }).then((obj) => {
+      console.log("resposne: ", obj);
+    });
   }
 
   render() {
@@ -71,6 +84,7 @@ class CrossWordForm extends React.Component {
           <WordInput  onFocus={(name) => this.extraWordInputFocused(name)}
                       tabIndex={this.state.words.length * 2 + 2} />
         </section>
+        <button type="submit">Create</button>
       </form>
     );
   }

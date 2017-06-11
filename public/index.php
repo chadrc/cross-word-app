@@ -9,11 +9,14 @@ require_once("../src/elements/pages/puzzle-page.hh");
 require_once("../src/elements/pages/create-page.hh");
 require_once("../src/elements/pages/puzzles-page.hh");
 require_once("../src/elements/pages/puzzle-solve.hh");
+require_once("../src/elements/pages/puzzle-make.hh");
 
 DB()->recordRequest(fetchPOST(), fetchGET(), requestUri());
 
 if (requestUri() === "/puzzle/solve") {
   echo PuzzleSolve();
+} else if(requestUri() === "/puzzle/make") {
+  echo PuzzleMake();
 } else {
   echo (
     <router>
